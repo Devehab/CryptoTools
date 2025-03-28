@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أدوات التشفير - منصة تعليمية للتشفير والأمان الرقمي</title>
+    <meta name="description" content="مجموعة من الأدوات التعليمية لفهم التشفير والأمان الرقمي">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- خط Tajawal -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+    
+    <!-- مكتبات التشفير -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.2.1/jsencrypt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    
+    <!-- Archivos JavaScript personalizados -->
+    <script src="js/crypto-utils.js"></script>
+    <script src="js/app.js"></script>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"}
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* تأثيرات الانتقال */
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+        
+        /* تلميحات الإدخال */
+        .input-tip {
+            font-size: 0.85rem;
+            color: #6b7280;
+        }
+        
+        /* تحسين تصميم علامات التبويب */
+        .tabs-container {
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        .tabs-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(156, 163, 175, 0.2);
+        }
+        
+        .tab-btn {
+            white-space: nowrap;
+            position: relative;
+            padding: 0.75rem 1rem;
+            font-weight: 500;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            margin: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background-color: rgba(219, 234, 254, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .dark .tab-btn:hover:not(.active) {
+            background-color: rgba(30, 58, 138, 0.2);
+        }
+        
+        .tab-btn.active {
+            color: #ffffff;
+            background-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.25);
+        }
+        
+        .dark .tab-btn.active {
+            color: #ffffff;
+            background-color: #3b82f6;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.5);
+        }
+        
+        .tab-btn i {
+            margin-left: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        /* Ensure all textarea and input placeholders use the Tajawal font */
+        textarea::placeholder, input::placeholder {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            .tabs-wrapper {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            
+            .tab-btn {
+                padding: 0.625rem 0.875rem;
+                font-size: 0.875rem;
+                min-width: 110px;
+                flex: 0 0 calc(33.333% - 0.75rem);
+                margin: 0.25rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .tabs-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 0.5rem;
+            }
+            
+            .tabs-wrapper {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 0.5rem;
+                width: 100%;
+            }
+            
+            .tab-btn {
+                flex: 0 0 auto;
+                min-width: 0;
+                width: 100%;
+                padding: 0.5rem 0.75rem;
+                font-size: 0.8125rem;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+    <header class="bg-white dark:bg-gray-800 shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                <i class="fas fa-shield-alt mr-2"></i>
+                أدوات التشفير
+            </h1>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <a href="landing.html" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                    <i class="fas fa-home"></i>
+                    <span class="mr-1">الرئيسية</span>
+                </a>
+                <button id="theme-toggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-400">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:inline"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+    
+    <main class="container mx-auto px-4 py-8">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">أدوات التشفير التعليمية</h2>
+            <p class="mb-6 text-gray-700 dark:text-gray-300 text-center">
+                مجموعة من الأدوات التعليمية لفهم مفاهيم التشفير والأمان الرقمي. جميع العمليات تتم محليًا في متصفحك ولا يتم إرسال أي بيانات إلى الخادم.
+            </p>
+            
+            <div class="tabs-container">
+                <div class="tabs-wrapper">
+                    <button class="tab-btn active" data-tab="content-wallet">
+                        <i class="fas fa-wallet"></i>
+                        مولد المحفظة
+                    </button>
+                    <button class="tab-btn" data-tab="content-base64">
+                        <i class="fas fa-exchange-alt"></i>
+                        ترميز Base64
+                    </button>
+                    <button class="tab-btn" data-tab="content-aes">
+                        <i class="fas fa-lock"></i>
+                        تشفير AES
+                    </button>
+                    <button class="tab-btn" data-tab="content-sha256">
+                        <i class="fas fa-hashtag"></i>
+                        تجزئة SHA-256
+                    </button>
+                    <button class="tab-btn" data-tab="content-hex-base58">
+                        <i class="fas fa-random"></i>
+                        Hex إلى Base58
+                    </button>
+                    <button class="tab-btn" data-tab="content-text-to-hash">
+                        <i class="fas fa-fingerprint"></i>
+                        النص إلى تجزئة
+                    </button>
+                    <button class="tab-btn" data-tab="content-rsa-key-generator">
+                        <i class="fas fa-key"></i>
+                        مفاتيح RSA
+                    </button>
+                    <button class="tab-btn" data-tab="content-digital-signature">
+                        <i class="fas fa-signature"></i>
+                        التوقيع الرقمي
+                    </button>
+                    <button class="tab-btn" data-tab="content-verify-signature">
+                        <i class="fas fa-check-circle"></i>
+                        التحقق من التوقيع
+                    </button>
+                </div>
+            </div>
+            
+            <!-- مولد المحفظة -->
+            <div id="content-wallet" class="tab-content active">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">مولد المحفظة</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    مولد المحفظة هو أداة تعليمية تقوم بإنشاء محفظة رقمية للعملات المشفرة. تتكون المحفظة من ثلاثة عناصر أساسية:
+                    <br><br>
+                    <strong>1. عبارة البذرة (Seed Phrase):</strong> 
+                    <br>• مجموعة من 12 كلمة عشوائية تستخدم لاسترداد محفظتك في حالة فقدان الوصول إليها.
+                    <br>• تعتبر هذه العبارة بمثابة "المفتاح الرئيسي" لمحفظتك، ومنها يتم اشتقاق المفتاح الخاص.
+                    <br>• <span class="text-red-600 dark:text-red-400 font-bold">تحذير أمني هام:</span> احتفظ بها في مكان آمن (مثل ورقة مكتوبة بخط اليد) ولا تشاركها مع أي شخص أبداً.
+                    <br><br>
+                    <strong>2. المفتاح الخاص (Private Key):</strong>
+                    <br>• سلسلة طويلة من الأرقام والحروف السداسية عشرية (Hexadecimal) مشتقة من عبارة البذرة.
+                    <br>• يستخدم للتوقيع على المعاملات وإثبات ملكيتك للعملات المشفرة.
+                    <br>• <span class="text-red-600 dark:text-red-400 font-bold">تحذير أمني هام:</span> من يملك المفتاح الخاص يملك العملات المشفرة، لذا لا تشاركه مع أحد.
+                    <br><br>
+                    <strong>3. العنوان العام (Public Address):</strong>
+                    <br>• عنوان فريد مشتق من المفتاح الخاص، يمكنك مشاركته مع الآخرين لتلقي العملات المشفرة.
+                    <br>• يمكن مشاركة هذا العنوان بأمان، فهو لا يسمح للآخرين بالوصول إلى أموالك.
+                    <br>• يمكن إنشاء رمز QR لهذا العنوان لتسهيل مشاركته.
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. انقر على زر "إنشاء محفظة جديدة" لتوليد محفظة عشوائية جديدة.
+                    <br>2. احفظ عبارة البذرة والمفتاح الخاص في مكان آمن.
+                    <br>3. يمكنك مشاركة العنوان العام مع الآخرين لتلقي العملات المشفرة.
+                    <br>4. استخدم زر النسخ بجانب كل حقل لنسخ المعلومات بسهولة.
+                    <br><br>
+                    <strong>ملاحظة تعليمية:</strong> في العالم الحقيقي، يُنصح باستخدام محافظ معتمدة ومعروفة بدلاً من المولدات عبر الإنترنت لتخزين العملات المشفرة الحقيقية.
+                </p>
+                
+                <div class="mb-6">
+                    <button id="generate-wallet" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-wallet mr-2"></i>
+                        إنشاء محفظة جديدة
+                    </button>
+                    <p class="mt-2 input-tip dark:text-gray-400">انقر على الزر لإنشاء محفظة جديدة بشكل عشوائي. ستظهر النتائج أدناه.</p>
+                </div>
+                
+                <div id="wallet-result" class="hidden">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">عبارة البذرة (Seed Phrase):</label>
+                        <div class="relative">
+                            <input type="text" id="seed-phrase" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200" readonly>
+                            <button data-copy="seed-phrase" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">هذه العبارة مهمة جداً لاسترداد محفظتك. احتفظ بها في مكان آمن ولا تشاركها مع أحد.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح الخاص (Private Key):</label>
+                        <div class="relative">
+                            <input type="text" id="private-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                            <button data-copy="private-key" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">هذا المفتاح يمكن استخدامه في أداة "التوقيع الرقمي" لإنشاء توقيعات رقمية. احتفظ به بسرية تامة.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">العنوان العام (Public Address):</label>
+                        <div class="relative">
+                            <input type="text" id="public-address" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                            <button data-copy="public-address" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">هذا العنوان يمكن مشاركته بأمان مع الآخرين لتلقي العملات المشفرة.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">رمز QR للعنوان العام:</label>
+                        <div id="qrcode" class="p-4 bg-white inline-block rounded-lg"></div>
+                        <p class="mt-1 input-tip dark:text-gray-400">يمكنك مشاركة رمز QR هذا لتسهيل نسخ العنوان العام.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- ترميز Base64 -->
+            <div id="content-base64" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">ترميز وفك ترميز Base64</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    ترميز Base64 هو طريقة لتمثيل البيانات الثنائية (Binary) باستخدام 64 حرفًا نصيًا فقط. يستخدم Base64 في:
+                    <br><br>
+                    <strong>1. نقل البيانات الثنائية عبر البريد الإلكتروني:</strong>
+                    <br>• يسمح بإرسال الصور والملفات المرفقة عبر البريد الإلكتروني بشكل آمن.
+                    <br>• يحول البيانات الثنائية إلى نص يمكن نقله عبر بروتوكولات تدعم النصوص فقط.
+                    <br><br>
+                    <strong>2. تخزين البيانات في ملفات HTML و XML:</strong>
+                    <br>• يستخدم لتضمين الصور مباشرة في ملفات HTML (data URIs).
+                    <br>• يسمح بتخزين البيانات الثنائية في ملفات نصية.
+                    <br><br>
+                    <strong>3. تشفير البيانات الحساسة:</strong>
+                    <br>• <span class="text-amber-600 dark:text-amber-400 font-bold">ملاحظة مهمة:</span> ترميز Base64 ليس تشفيرًا آمنًا! فهو يمكن فك ترميزه بسهولة.
+                    <br>• يستخدم فقط لإخفاء البيانات عن المشاهدة العرضية وليس للحماية الحقيقية.
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. أدخل النص المراد ترميزه أو فك ترميزه في مربع النص.
+                    <br>2. انقر على زر "ترميز Base64" لتحويل النص العادي إلى ترميز Base64.
+                    <br>3. انقر على زر "فك ترميز Base64" لتحويل ترميز Base64 إلى النص الأصلي.
+                    <br>4. استخدم زر النسخ لنسخ النتيجة بسهولة.
+                    <br><br>
+                    <strong>مثال:</strong> النص "مرحبا" عند ترميزه بـ Base64 يصبح "2YXYsdit2KjYpw=="
+                </p>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المدخل:</label>
+                    <textarea id="base64-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المراد ترميزه أو فك ترميزه..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل نصًا عاديًا للترميز أو نصًا مرمزًا بـ Base64 لفك الترميز.</p>
+                </div>
+                
+                <div class="mb-6 flex flex-wrap gap-2">
+                    <button id="encode-base64" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-lock mr-2"></i>
+                        ترميز Base64
+                    </button>
+                    <button id="decode-base64" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-unlock mr-2"></i>
+                        فك ترميز Base64
+                    </button>
+                    <p class="w-full mt-2 input-tip dark:text-gray-400">اختر "ترميز" لتحويل النص العادي إلى Base64، أو "فك ترميز" لتحويل Base64 إلى نص عادي.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النتيجة:</label>
+                    <div class="relative">
+                        <textarea id="base64-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="4" readonly></textarea>
+                        <button data-copy="base64-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="mt-1 input-tip dark:text-gray-400">النتيجة ستظهر هنا بعد الترميز أو فك الترميز. استخدم زر النسخ لنسخ النتيجة.</p>
+                </div>
+            </div>
+            
+            <!-- تشفير AES -->
+            <div id="content-aes" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">تشفير وفك تشفير AES</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    تشفير AES (Advanced Encryption Standard) هو معيار تشفير متماثل (Symmetric) قوي ومعتمد عالمياً:
+                    <br><br>
+                    <strong>1. ما هو تشفير AES؟</strong>
+                    <br>• معيار تشفير متقدم اعتمدته الحكومة الأمريكية عام 2001.
+                    <br>• يستخدم نفس المفتاح للتشفير وفك التشفير (تشفير متماثل).
+                    <br>• يعتبر من أقوى خوارزميات التشفير المتاحة حالياً للاستخدام العام.
+                    <br><br>
+                    <strong>2. استخدامات تشفير AES:</strong>
+                    <br>• تشفير الملفات والرسائل السرية.
+                    <br>• حماية الاتصالات عبر الإنترنت (HTTPS، VPN).
+                    <br>• تأمين قواعد البيانات والمعلومات الحساسة.
+                    <br>• تشفير المحادثات والرسائل الفورية.
+                    <br><br>
+                    <strong>3. أهمية المفتاح في تشفير AES:</strong>
+                    <br>• <span class="text-red-600 dark:text-red-400 font-bold">تحذير أمني هام:</span> يجب الاحتفاظ بالمفتاح في مكان آمن.
+                    <br>• فقدان المفتاح يعني فقدان القدرة على فك تشفير البيانات نهائياً.
+                    <br>• قوة المفتاح تحدد مدى صعوبة كسر التشفير (يفضل استخدام مفاتيح طويلة ومعقدة).
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. أدخل النص المراد تشفيره أو فك تشفيره في مربع النص.
+                    <br>2. أدخل المفتاح السري الذي سيستخدم للتشفير أو فك التشفير (يجب أن يكون نفس المفتاح للعمليتين).
+                    <br>3. انقر على زر "توليد مفتاح عشوائي" لإنشاء مفتاح قوي بشكل عشوائي.
+                    <br>4. انقر على زر "تشفير" لتشفير النص أو "فك التشفير" لاستعادة النص الأصلي.
+                    <br>5. استخدم زر النسخ لنسخ النتيجة والمفتاح بسهولة.
+                    <br><br>
+                    <strong>ملاحظة مهمة:</strong> عند مشاركة نص مشفر مع شخص آخر، يجب مشاركة المفتاح معه عبر قناة اتصال آمنة مختلفة.
+                </p>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المدخل:</label>
+                    <textarea id="aes-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المراد تشفيره أو فك تشفيره..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل النص العادي للتشفير أو النص المشفر لفك التشفير.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح السري:</label>
+                    <div class="flex items-center gap-2">
+                        <div class="relative flex-grow">
+                            <input type="text" id="aes-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" placeholder="أدخل المفتاح السري أو قم بتوليد مفتاح عشوائي...">
+                            <button data-copy="aes-key" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <button id="generate-aes-key" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                            <i class="fas fa-key mr-2"></i>
+                            توليد مفتاح عشوائي
+                        </button>
+                    </div>
+                    <p class="mt-1 input-tip dark:text-gray-400">استخدم نفس المفتاح للتشفير وفك التشفير. احتفظ به في مكان آمن.</p>
+                </div>
+                
+                <div class="mb-6 flex flex-wrap gap-2">
+                    <button id="encrypt-aes" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-lock mr-2"></i>
+                        تشفير
+                    </button>
+                    <button id="decrypt-aes" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-unlock mr-2"></i>
+                        فك التشفير
+                    </button>
+                    <p class="w-full mt-2 input-tip dark:text-gray-400">تأكد من استخدام نفس المفتاح للتشفير وفك التشفير.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النتيجة:</label>
+                    <div class="relative">
+                        <textarea id="aes-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="4" readonly></textarea>
+                        <button data-copy="aes-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="mt-1 input-tip dark:text-gray-400">النتيجة ستظهر هنا بعد التشفير أو فك التشفير. لاحظ أن النص المشفر سيظهر بتنسيق Base64.</p>
+                </div>
+            </div>
+            
+            <!-- تجزئة SHA-256 -->
+            <div id="content-sha256" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">تجزئة SHA-256</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    SHA-256 هي خوارزمية تجزئة (Hashing) قوية تنتج قيمة تجزئة بطول 256 بت (64 حرفًا سداسي عشري):
+                    <br><br>
+                    <strong>1. ما هي خوارزمية التجزئة SHA-256؟</strong>
+                    <br>• جزء من عائلة خوارزميات SHA-2 (Secure Hash Algorithm 2) التي طورتها وكالة الأمن القومي الأمريكية.
+                    <br>• تنتج قيمة تجزئة بطول ثابت (256 بت) مهما كان حجم المدخلات.
+                    <br>• تتميز بأنها أحادية الاتجاه، أي لا يمكن استرجاع النص الأصلي من قيمة التجزئة.
+                    <br><br>
+                    <strong>2. استخدامات SHA-256:</strong>
+                    <br>• تقنية البلوكتشين والعملات المشفرة: تستخدم في تعدين البيتكوين وتأمين المعاملات.
+                    <br>• التحقق من سلامة الملفات: للتأكد من عدم تغيير الملفات أثناء التنزيل أو النقل.
+                    <br>• تخزين كلمات المرور: لتخزين كلمات المرور بشكل آمن في قواعد البيانات.
+                    <br>• التوقيعات الرقمية: كجزء من عملية إنشاء والتحقق من التوقيعات الرقمية.
+                    <br>• تقنية البلوكتشين: لربط الكتل (blocks) وتأمين المعاملات.
+                    <br><br>
+                    <strong>3. خصائص SHA-256:</strong>
+                    <br>• <strong>الثبات:</strong> نفس المدخلات تنتج دائمًا نفس قيمة التجزئة.
+                    <br>• <strong>السرعة:</strong> يمكن حساب قيمة التجزئة بسرعة.
+                    <br>• <strong>مقاومة التصادم:</strong> من الصعب جدًا إيجاد مدخلين مختلفين ينتجان نفس قيمة التجزئة.
+                    <br>• <strong>تأثير الانهيار:</strong> تغيير حرف واحد في المدخلات يؤدي إلى تغيير كبير في قيمة التجزئة الناتجة.
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. أدخل النص المراد حساب قيمة التجزئة له في مربع النص.
+                    <br>2. انقر على زر "حساب التجزئة" لإنشاء قيمة تجزئة SHA-256.
+                    <br>3. استخدم زر النسخ لنسخ قيمة التجزئة الناتجة.
+                    <br><br>
+                    <strong>ملاحظة تعليمية:</strong> يمكنك استخدام هذه الأداة للتحقق من سلامة الملفات عن طريق مقارنة قيمة التجزئة المحسوبة مع القيمة المقدمة من المصدر.
+                </p>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المدخل:</label>
+                    <textarea id="sha256-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المراد حساب قيمة التجزئة له..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل أي نص، سواء كان قصيرًا أو طويلًا، وسيتم إنتاج قيمة تجزئة بطول ثابت.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <button id="hash-sha256" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-hashtag mr-2"></i>
+                        حساب التجزئة
+                    </button>
+                    <p class="mt-2 input-tip dark:text-gray-400">انقر لحساب قيمة تجزئة SHA-256 للنص المدخل.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">قيمة التجزئة (SHA-256):</label>
+                    <div class="relative">
+                        <input type="text" id="sha256-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                        <button data-copy="sha256-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="mt-1 input-tip dark:text-gray-400">قيمة التجزئة الناتجة ستكون دائمًا بطول 64 حرفًا سداسي عشري، بغض النظر عن طول النص المدخل.</p>
+                </div>
+            </div>
+            
+            <!-- تحويل Hex إلى Base58 -->
+            <div id="content-hex-base58" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">تحويل Hex إلى Base58</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    Base58 هو نظام ترميز يستخدم 58 حرفًا مختلفًا لتمثيل البيانات الثنائية بشكل أكثر كفاءة وأمانًا:
+                    <br><br>
+                    <strong>1. ما هو ترميز Base58؟</strong>
+                    <br>• نظام ترميز مشابه لـ Base64 ولكن بدون الأحرف المربكة مثل 0 (صفر)، O (حرف O الكبير)، l (حرف L الصغير)، I (حرف I الكبير).
+                    <br>• يستخدم 58 حرفًا فقط: الأرقام (1-9) والحروف الإنجليزية الكبيرة والصغيرة (باستثناء الأحرف المربكة).
+                    <br>• تم تطويره خصيصًا للاستخدام في عناوين البيتكوين لتقليل أخطاء النسخ والكتابة.
+                    <br><br>
+                    <strong>2. استخدامات Base58:</strong>
+                    <br>• عناوين العملات المشفرة: مثل عناوين البيتكوين والعملات المشفرة الأخرى.
+                    <br>• المفاتيح الخاصة المشفرة: لتخزين المفاتيح الخاصة بتنسيق أكثر كفاءة.
+                    <br>• تخزين البيانات الثنائية بشكل مقروء: حيث يكون أكثر كفاءة من التمثيل السداسي العشري (Hex).
+                    <br><br>
+                    <strong>3. الفرق بين Hex وBase58:</strong>
+                    <br>• <strong>Hex (سداسي عشري):</strong> يستخدم 16 حرفًا (0-9 و A-F) لتمثيل البيانات الثنائية.
+                    <br>• <strong>Base58:</strong> يستخدم 58 حرفًا مختلفًا، مما يجعله أكثر كفاءة (أقصر) وأقل عرضة للأخطاء.
+                    <br>• تحويل البيانات من Hex إلى Base58 يقلل من طول النص ويجعله أسهل للقراءة.
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. أدخل سلسلة سداسية عشرية (Hex) في مربع النص (تتكون من الأحرف 0-9 و A-F فقط).
+                    <br>2. انقر على زر "تحويل إلى Base58" لتحويل القيمة السداسية العشرية إلى تنسيق Base58.
+                    <br>3. استخدم زر النسخ لنسخ النتيجة بسهولة.
+                    <br><br>
+                    <strong>ملاحظة تعليمية:</strong> هذه الأداة مفيدة بشكل خاص عند التعامل مع عناوين العملات المشفرة أو المفاتيح الخاصة التي تكون عادة في تنسيق سداسي عشري وتحتاج إلى تحويلها إلى Base58.
+                </p>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">القيمة السداسية العشرية (Hex):</label>
+                    <textarea id="hex-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" rows="3" placeholder="أدخل قيمة سداسية عشرية (مثال: 1A2B3C4D5E6F)..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل قيمة سداسية عشرية صالحة (تتكون من الأحرف 0-9 و A-F فقط).</p>
+                </div>
+                
+                <div class="mb-6">
+                    <button id="convert-hex-to-base58" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-exchange-alt mr-2"></i>
+                        تحويل إلى Base58
+                    </button>
+                    <p class="mt-2 input-tip dark:text-gray-400">انقر لتحويل القيمة السداسية العشرية إلى تنسيق Base58.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">القيمة بتنسيق Base58:</label>
+                    <div class="relative">
+                        <input type="text" id="base58-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                        <button data-copy="base58-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="mt-1 input-tip dark:text-gray-400">النتيجة بتنسيق Base58 ستكون أقصر من القيمة السداسية العشرية الأصلية وأسهل للقراءة.</p>
+                </div>
+            </div>
+            
+            <!-- النص إلى Hash -->
+            <div id="content-text-to-hash" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">النص إلى تجزئة (متعددة الخوارزميات)</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    تتيح هذه الأداة تحويل النص إلى قيم تجزئة باستخدام خوارزميات تجزئة متعددة في وقت واحد:
+                    <br><br>
+                    <strong>1. ما هي خوارزميات التجزئة؟</strong>
+                    <br>• خوارزميات رياضية تحول البيانات إلى قيمة ثابتة الطول (بصمة رقمية).
+                    <br>• تتميز بأنها أحادية الاتجاه (لا يمكن استرجاع البيانات الأصلية من قيمة التجزئة).
+                    <br>• أي تغيير بسيط في البيانات المدخلة يؤدي إلى تغيير كبير في قيمة التجزئة الناتجة.
+                    <br><br>
+                    <strong>2. الخوارزميات المتاحة في هذه الأداة:</strong>
+                    <br>• <strong>MD5:</strong> خوارزمية قديمة تنتج قيمة بطول 128 بت (32 حرفًا سداسي عشري). <span class="text-amber-600 dark:text-amber-400 font-bold">ملاحظة:</span> تعتبر غير آمنة للاستخدامات الأمنية الحساسة.
+                    <br>• <strong>SHA-1:</strong> تنتج قيمة بطول 160 بت (40 حرفًا سداسي عشري). <span class="text-amber-600 dark:text-amber-400 font-bold">ملاحظة:</span> تعتبر ضعيفة نسبيًا للتطبيقات الأمنية الحديثة.
+                    <br>• <strong>SHA-256:</strong> جزء من عائلة SHA-2، تنتج قيمة بطول 256 بت (64 حرفًا سداسي عشري). تعتبر آمنة للاستخدامات الحالية.
+                    <br>• <strong>SHA-512:</strong> إصدار أقوى من SHA-256، تنتج قيمة بطول 512 بت (128 حرفًا سداسي عشري).
+                    <br>• <strong>RIPEMD-160:</strong> خوارزمية بديلة تنتج قيمة بطول 160 بت (40 حرفًا سداسي عشري). تستخدم في بروتوكول البيتكوين.
+                    <br><br>
+                    <strong>3. استخدامات قيم التجزئة:</strong>
+                    <br>• <strong>التحقق من سلامة البيانات:</strong> للتأكد من عدم تغيير الملفات أثناء النقل.
+                    <br>• <strong>تخزين كلمات المرور:</strong> لا تخزن كلمات المرور بشكل مباشر، بل تخزن قيم التجزئة الخاصة بها.
+                    <br>• <strong>التوقيعات الرقمية:</strong> كجزء من عملية التوقيع الرقمي والتحقق منه.
+                    <br>• <strong>تقنية البلوكتشين:</strong> لربط الكتل (blocks) وتأمين المعاملات.
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. أدخل النص المراد تحويله إلى قيم تجزئة في مربع النص.
+                    <br>2. انقر على زر "حساب قيم التجزئة" لإنشاء قيم التجزئة بجميع الخوارزميات المتاحة.
+                    <br>3. استخدم أزرار النسخ لنسخ قيم التجزئة المختلفة بسهولة.
+                    <br><br>
+                    <strong>ملاحظة تعليمية:</strong> لاحظ الاختلاف في طول قيم التجزئة الناتجة من كل خوارزمية، وكيف أن نفس النص ينتج قيمًا مختلفة تمامًا مع كل خوارزمية.
+                </p>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المدخل:</label>
+                    <textarea id="text-to-hash-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المراد تحويله إلى قيم تجزئة..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل أي نص، سواء كان قصيرًا أو طويلًا، وسيتم إنتاج قيم تجزئة بجميع الخوارزميات المتاحة.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <button id="generate-hashes" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-hashtag mr-2"></i>
+                        حساب قيم التجزئة
+                    </button>
+                    <p class="mt-2 input-tip dark:text-gray-400">انقر لحساب قيم التجزئة للنص المدخل باستخدام جميع الخوارزميات.</p>
+                </div>
+                
+                <div id="hash-results" class="space-y-4">
+                    <div class="mb-4">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">MD5 (128 بت):</label>
+                        <div class="relative">
+                            <input type="text" id="md5-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                            <button data-copy="md5-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">خوارزمية قديمة، غير آمنة للاستخدامات الأمنية. طول الناتج: 32 حرفًا سداسي عشري.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">SHA-1 (160 بت):</label>
+                        <div class="relative">
+                            <input type="text" id="sha1-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                            <button data-copy="sha1-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">خوارزمية قديمة نسبيًا، تعتبر ضعيفة للتطبيقات الأمنية الحديثة. طول الناتج: 40 حرفًا سداسي عشري.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">SHA-256 (256 بت):</label>
+                        <div class="relative">
+                            <input type="text" id="sha256-output-multi" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                            <button data-copy="sha256-output-multi" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">خوارزمية آمنة وشائعة الاستخدام في العديد من التطبيقات الحديثة. طول الناتج: 64 حرفًا سداسي عشري.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">SHA-512 (512 بت):</label>
+                        <div class="relative">
+                            <input type="text" id="sha512-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                            <button data-copy="sha512-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">خوارزمية أقوى من SHA-256، مناسبة للتطبيقات التي تتطلب أمانًا عاليًا. طول الناتج: 128 حرفًا سداسي عشري.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">RIPEMD-160 (160 بت):</label>
+                        <div class="relative">
+                            <input type="text" id="ripemd160-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" readonly>
+                            <button data-copy="ripemd160-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">خوارزمية بديلة تستخدم في بروتوكول البيتكوين. طول الناتج: 40 حرفًا سداسي عشري.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- مولد مفاتيح RSA -->
+            <div id="content-rsa-key-generator" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">مولد مفاتيح RSA</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    RSA هو نظام تشفير بالمفتاح العام يستخدم زوجًا من المفاتيح (مفتاح عام ومفتاح خاص) للتشفير وفك التشفير:
+                    <br><br>
+                    <strong>1. ما هو تشفير RSA؟</strong>
+                    <br>• نظام تشفير غير متماثل (asymmetric) يستخدم مفتاحين مختلفين: مفتاح عام للتشفير ومفتاح خاص لفك التشفير.
+                    <br>• تم تطويره عام 1977 بواسطة رون ريفست، آدي شامير، وليونارد أدلمان (الأحرف الأولى من أسمائهم تشكل RSA).
+                    <br>• يعتمد على صعوبة تحليل الأعداد الكبيرة إلى عواملها الأولية.
+                    <br><br>
+                    <strong>2. كيف يعمل تشفير RSA؟</strong>
+                    <br>• <strong>المفتاح العام:</strong> يستخدم لتشفير البيانات ويمكن مشاركته مع أي شخص.
+                    <br>• <strong>المفتاح الخاص:</strong> يستخدم لفك تشفير البيانات ويجب الاحتفاظ به بسرية تامة.
+                    <br>• البيانات المشفرة بالمفتاح العام يمكن فك تشفيرها فقط باستخدام المفتاح الخاص المقابل.
+                    <br><br>
+                    <strong>3. استخدامات RSA:</strong>
+                    <br>• <strong>التشفير الآمن:</strong> حماية المعلومات الحساسة أثناء نقلها عبر الإنترنت.
+                    <br>• <strong>التوقيعات الرقمية:</strong> التحقق من هوية المرسل وسلامة الرسالة.
+                    <br>• <strong>بروتوكولات الأمان:</strong> يستخدم في HTTPS، SSH، وبروتوكولات VPN.
+                    <br>• <strong>تبادل المفاتيح:</strong> إنشاء قنوات اتصال آمنة بين الأطراف.
+                    <br><br>
+                    <strong>4. أحجام المفاتيح وقوتها:</strong>
+                    <br>• <strong>1024 بت:</strong> لم يعد آمنًا للاستخدامات الحساسة.
+                    <br>• <strong>2048 بت:</strong> الحد الأدنى الموصى به حاليًا للاستخدام العام.
+                    <br>• <strong>4096 بت:</strong> مستوى أمان عالٍ للبيانات الحساسة جدًا.
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. اختر حجم المفتاح المناسب (2048 بت هو الخيار الافتراضي الموصى به).
+                    <br>2. انقر على زر "توليد زوج المفاتيح" لإنشاء زوج من المفاتيح RSA.
+                    <br>3. انسخ المفتاح العام والمفتاح الخاص واحتفظ بهما في مكان آمن.
+                    <br>4. <span class="text-red-600 dark:text-red-400 font-bold">تحذير أمني:</span> احتفظ بالمفتاح الخاص بسرية تامة ولا تشاركه مع أي شخص.
+                    <br><br>
+                    <strong>ملاحظة تعليمية:</strong> كلما زاد حجم المفتاح، زادت قوة التشفير، ولكن قد تستغرق عملية التوليد وقتًا أطول وتتطلب موارد حوسبة أكثر.
+                </p>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">حجم المفتاح:</label>
+                    <select id="rsa-key-size" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200">
+                        <option value="1024">1024 بت (غير آمن للاستخدامات الحساسة)</option>
+                        <option value="2048" selected>2048 بت (موصى به للاستخدام العام)</option>
+                        <option value="4096">4096 بت (أمان عالٍ، أبطأ في التوليد)</option>
+                    </select>
+                    <p class="mt-1 input-tip dark:text-gray-400">اختر حجم المفتاح المناسب لاحتياجاتك الأمنية. كلما زاد الحجم، زادت قوة التشفير.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <button id="generate-rsa-keys-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-key mr-2"></i>
+                        توليد زوج المفاتيح
+                    </button>
+                    <p class="mt-2 input-tip dark:text-gray-400">انقر لتوليد زوج جديد من مفاتيح RSA بالحجم المحدد. قد تستغرق العملية بضع ثوانٍ.</p>
+                </div>
+                
+                <div id="rsa-keys-output" class="space-y-6 hidden">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح العام (Public Key):</label>
+                        <div class="relative">
+                            <textarea id="public-key-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="5" readonly></textarea>
+                            <button data-copy="public-key-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">هذا هو المفتاح العام الذي يمكنك مشاركته مع الآخرين لتشفير الرسائل التي سترسل إليك.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح الخاص (Private Key):</label>
+                        <div class="relative">
+                            <textarea id="private-key-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="8" readonly></textarea>
+                            <button data-copy="private-key-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400 text-red-600 dark:text-red-400 font-bold">تحذير أمني: احتفظ بهذا المفتاح الخاص بسرية تامة! أي شخص يمتلك هذا المفتاح يمكنه فك تشفير الرسائل المشفرة بالمفتاح العام المقابل.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- التوقيع الرقمي -->
+            <div id="content-digital-signature" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">التوقيع الرقمي</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    التوقيع الرقمي هو تقنية تسمح بالتحقق من هوية المرسل وسلامة الرسالة المرسلة:
+                    <br><br>
+                    <strong>1. ما هو التوقيع الرقمي؟</strong>
+                    <br>• آلية رياضية تستخدم لإثبات أصالة وسلامة الرسالة أو المستند الرقمي.
+                    <br>• يعتمد على تقنية التشفير غير المتماثل (مثل RSA) حيث يستخدم المفتاح الخاص للتوقيع.
+                    <br>• يمكن التحقق من التوقيع باستخدام المفتاح العام للموقّع.
+                    <br><br>
+                    <strong>2. كيف يعمل التوقيع الرقمي؟</strong>
+                    <br>• <strong>إنشاء التوقيع:</strong> يتم حساب قيمة تجزئة (hash) للرسالة، ثم تشفير هذه القيمة باستخدام المفتاح الخاص للمرسل.
+                    <br>• <strong>التحقق من التوقيع:</strong> يتم فك تشفير التوقيع باستخدام المفتاح العام للمرسل، ثم مقارنة النتيجة مع قيمة التجزئة المحسوبة للرسالة المستلمة.
+                    <br>• إذا تطابقت القيمتان، فهذا يعني أن الرسالة لم يتم تعديلها وأنها موقعة فعلاً من قبل صاحب المفتاح الخاص.
+                    <br><br>
+                    <strong>3. استخدامات التوقيع الرقمي:</strong>
+                    <br>• <strong>المستندات القانونية:</strong> توقيع العقود والاتفاقيات إلكترونيًا.
+                    <br>• <strong>البريد الإلكتروني:</strong> التحقق من هوية مرسل البريد الإلكتروني.
+                    <br>• <strong>تحديثات البرامج:</strong> التأكد من أن تحديثات البرامج صادرة من مصدرها الأصلي.
+                    <br>• <strong>المعاملات المالية:</strong> تأمين المعاملات في العملات المشفرة والخدمات المصرفية الإلكترونية.
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. أدخل النص الذي تريد توقيعه في مربع النص.
+                    <br>2. أدخل المفتاح الخاص RSA الخاص بك (يمكنك إنشاء مفتاح باستخدام أداة "مولد مفاتيح RSA").
+                    <br>3. انقر على زر "إنشاء التوقيع الرقمي" لتوقيع النص.
+                    <br>4. استخدم التوقيع الناتج مع النص الأصلي والمفتاح العام للتحقق من صحة التوقيع.
+                    <br><br>
+                    <strong>ملاحظة تعليمية:</strong> التوقيع الرقمي يستخدم خوارزمية SHA-256 لحساب قيمة التجزئة للنص قبل تشفيرها بالمفتاح الخاص.
+                </p>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المراد توقيعه:</label>
+                    <textarea id="text-to-sign" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص الذي تريد توقيعه..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل النص الأصلي الذي تريد إنشاء توقيع رقمي له.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح الخاص (RSA):</label>
+                    <textarea id="signing-private-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" rows="6" placeholder="أدخل المفتاح الخاص RSA الخاص بك..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل المفتاح الخاص RSA بتنسيق PEM (يبدأ بـ -----BEGIN PRIVATE KEY----- وينتهي بـ -----END PRIVATE KEY-----).</p>
+                </div>
+                
+                <div class="mb-6">
+                    <button id="sign-data-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-signature mr-2"></i>
+                        إنشاء التوقيع الرقمي
+                    </button>
+                    <p class="mt-2 input-tip dark:text-gray-400">انقر لإنشاء توقيع رقمي للنص باستخدام المفتاح الخاص المدخل.</p>
+                </div>
+                
+                <div id="signature-result" class="mb-6 hidden">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">التوقيع الرقمي (مشفر بـ Base64):</label>
+                    <div class="relative">
+                        <textarea id="signature-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="4" readonly></textarea>
+                        <button data-copy="signature-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="mt-1 input-tip dark:text-gray-400">هذا هو التوقيع الرقمي للنص المدخل. يمكنك مشاركة هذا التوقيع مع النص الأصلي والمفتاح العام للتحقق من صحة التوقيع.</p>
+                </div>
+            </div>
+            
+            <!-- التحقق من التوقيع -->
+            <div id="content-verify-signature" class="tab-content">
+                <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">التحقق من التوقيع الرقمي</h2>
+                <p class="mb-6 text-gray-700 dark:text-gray-300">
+                    التحقق من التوقيع الرقمي هو عملية التأكد من صحة التوقيع الرقمي وسلامة الرسالة المرتبطة به:
+                    <br><br>
+                    <strong>1. أهمية التحقق من التوقيع الرقمي:</strong>
+                    <br>• <strong>التحقق من الهوية:</strong> التأكد من أن الرسالة تم توقيعها فعلاً من قبل الشخص المزعوم (صاحب المفتاح الخاص).
+                    <br>• <strong>التحقق من السلامة:</strong> التأكد من أن الرسالة لم يتم تعديلها بعد توقيعها.
+                    <br>• <strong>عدم الإنكار:</strong> لا يمكن للموقّع إنكار أنه قام بالتوقيع، لأن المفتاح الخاص يفترض أنه بحوزته فقط.
+                    <br><br>
+                    <strong>2. كيف تعمل عملية التحقق؟</strong>
+                    <br>• <strong>الخطوة 1:</strong> حساب قيمة تجزئة (hash) للرسالة الأصلية باستخدام نفس خوارزمية التجزئة المستخدمة في التوقيع (SHA-256).
+                    <br>• <strong>الخطوة 2:</strong> فك تشفير التوقيع الرقمي باستخدام المفتاح العام للمرسل، مما ينتج قيمة التجزئة الأصلية.
+                    <br>• <strong>الخطوة 3:</strong> مقارنة قيمة التجزئة المحسوبة مع قيمة التجزئة المستخرجة من التوقيع.
+                    <br>• <strong>الخطوة 4:</strong> إذا تطابقت القيمتان، فإن التوقيع صحيح والرسالة لم يتم تعديلها.
+                    <br><br>
+                    <strong>3. متى يفشل التحقق من التوقيع؟</strong>
+                    <br>• إذا تم تعديل الرسالة الأصلية بعد توقيعها.
+                    <br>• إذا تم استخدام مفتاح عام خاطئ (ليس المفتاح العام المقابل للمفتاح الخاص المستخدم في التوقيع).
+                    <br>• إذا كان التوقيع الرقمي تالفًا أو تم تعديله.
+                    <br><br>
+                    <strong>كيفية استخدام هذه الأداة:</strong>
+                    <br>1. أدخل النص الأصلي الذي تم توقيعه.
+                    <br>2. أدخل التوقيع الرقمي (بتنسيق Base64) الذي تريد التحقق منه.
+                    <br>3. أدخل المفتاح العام RSA للشخص الذي قام بالتوقيع.
+                    <br>4. انقر على زر "التحقق من التوقيع" للتأكد من صحة التوقيع.
+                    <br><br>
+                    <strong>ملاحظة تعليمية:</strong> نتيجة التحقق ستكون إما "التوقيع صحيح" (باللون الأخضر) أو "التوقيع غير صحيح" (باللون الأحمر).
+                </p>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص الأصلي:</label>
+                    <textarea id="verify-original-text" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص الأصلي الذي تم توقيعه..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل النص الأصلي بالضبط كما كان عند إنشاء التوقيع. أي تغيير، حتى لو كان حرفًا واحدًا، سيؤدي إلى فشل التحقق.</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">التوقيع الرقمي (بتنسيق Base64):</label>
+                    <textarea id="verify-signature" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" rows="4" placeholder="أدخل التوقيع الرقمي بتنسيق Base64..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل التوقيع الرقمي بتنسيق Base64 كما تم إنشاؤه بواسطة أداة "التوقيع الرقمي".</p>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح العام (RSA):</label>
+                    <textarea id="verify-public-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" rows="6" placeholder="أدخل المفتاح العام RSA للموقّع..."></textarea>
+                    <p class="mt-1 input-tip dark:text-gray-400">أدخل المفتاح العام RSA بتنسيق PEM (يبدأ بـ -----BEGIN PUBLIC KEY----- وينتهي بـ -----END PUBLIC KEY-----).</p>
+                </div>
+                
+                <div class="mb-6">
+                    <button id="verify-signature-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        التحقق من التوقيع
+                    </button>
+                    <p class="mt-2 input-tip dark:text-gray-400">انقر للتحقق من صحة التوقيع الرقمي باستخدام المفتاح العام المدخل.</p>
+                </div>
+                
+                <div id="verification-result" class="mb-6 hidden">
+                    <div class="p-4 rounded-lg">
+                        <p id="verification-message" class="text-center text-lg font-bold"></p>
+                    </div>
+                    <p class="mt-1 input-tip dark:text-gray-400">إذا كانت النتيجة "التوقيع صحيح"، فهذا يعني أن النص لم يتم تعديله وأنه تم توقيعه بالفعل باستخدام المفتاح الخاص المقابل للمفتاح العام المدخل.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

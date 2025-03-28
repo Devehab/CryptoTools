@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أدوات التشفير - تعلم التشفير بالعربية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        },
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap');
+        body {
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 50%, #0ea5e9 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .blob {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            filter: blur(80px);
+            opacity: 0.4;
+            z-index: 0;
+            border-radius: 50%;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .clip-path-wave {
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <!-- Header -->
+    <header class="relative z-10 bg-white shadow-sm">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <h1 class="text-3xl font-bold text-blue-600 mb-4 md:mb-0">
+                    <i class="fas fa-shield mr-2"></i>
+                    أدوات التشفير
+                </h1>
+                <div class="flex items-center space-x-4">
+                    <a href="CryptoTools.html" class="py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                        ابدأ باستخدام الأدوات
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative bg-gradient-to-b from-blue-50 to-white py-20 clip-path-wave overflow-hidden">
+        <div class="absolute top-0 right-0 -z-10">
+            <div class="blob bg-blue-300 top-0 right-0"></div>
+        </div>
+        <div class="absolute bottom-0 left-0 -z-10">
+            <div class="blob bg-indigo-300 bottom-0 left-0"></div>
+        </div>
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col lg:flex-row items-center">
+                <div class="lg:w-1/2 mb-12 lg:mb-0">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+                        <span class="text-gray-900">تعلم</span>
+                        <span class="gradient-text"> التشفير وأمن المعلومات </span>
+                        <span class="text-gray-900">باللغة العربية</span>
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        مجموعة أدوات مفتوحة المصدر للتشفير وأمن المعلومات، مصممة خصيصاً للمتحدثين باللغة العربية لتعلم أساسيات التشفير بشكل عملي وتطبيقي.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 sm:space-x-reverse">
+                        <a href="CryptoTools.html" class="py-3 px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-center transition-all transform hover:scale-105">
+                            استخدم الأدوات الآن
+                        </a>
+                        <a href="#about" class="py-3 px-8 border border-blue-600 text-blue-600 hover:bg-blue-50 rounded-lg text-center transition-all">
+                            تعرف على المشروع
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:w-1/2 relative">
+                    <div class="floating relative z-10 rounded-lg shadow-xl bg-white p-4">
+                        <img src="https://cdn.pixabay.com/photo/2018/05/08/08/44/artificial-intelligence-3382507_960_720.jpg" alt="التشفير وأمن المعلومات" class="rounded-lg w-full max-w-md mx-auto object-cover" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Educational Purpose Section -->
+    <section class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="gradient-text">منصة تعليمية</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="bg-blue-50 rounded-xl p-8 shadow-md">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-100 flex items-center justify-center">
+                        <i class="fas fa-book text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4">تعلم بالعربية</h3>
+                    <p class="text-gray-600 text-center">
+                        واجهة استخدام ودروس تعليمية كاملة باللغة العربية لسد فجوة المحتوى التقني في مجال التشفير
+                    </p>
+                </div>
+                
+                <div class="bg-blue-50 rounded-xl p-8 shadow-md">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-100 flex items-center justify-center">
+                        <i class="fas fa-code text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4">تطبيق عملي</h3>
+                    <p class="text-gray-600 text-center">
+                        تجربة عملية للتشفير وفك التشفير بدلاً من مجرد التعلم النظري، مما يساعد في فهم المفاهيم بشكل أعمق
+                    </p>
+                </div>
+                
+                <div class="bg-blue-50 rounded-xl p-8 shadow-md">
+                    <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-blue-100 flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-4">خصوصية وأمان</h3>
+                    <p class="text-gray-600 text-center">
+                        جميع العمليات تتم محلياً في متصفحك دون إرسال أي بيانات للخوادم، مما يضمن خصوصية كاملة لبياناتك
+                    </p>
+                </div>
+            </div>
+            
+            <div class="max-w-4xl mx-auto bg-blue-50 rounded-xl p-8 shadow-md">
+                <h3 class="text-2xl font-bold text-center mb-6">
+                    <span class="gradient-text">الهدف من المشروع</span>
+                </h3>
+                <p class="text-gray-700 mb-4">
+                    تم تطوير "أدوات التشفير" بهدف تقديم محتوى تعليمي عربي عالي الجودة في مجال التشفير وأمن المعلومات، وهو مجال يفتقر للمصادر العربية الموثوقة والعملية. يسعى هذا المشروع إلى:
+                </p>
+                <ul class="space-y-3 text-gray-700 mr-6 mb-6">
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mt-1 ml-2"></i>
+                        <span>توفير أدوات تشفير متكاملة باللغة العربية للطلاب والباحثين والمهتمين بأمن المعلومات</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mt-1 ml-2"></i>
+                        <span>تبسيط المفاهيم المعقدة في عالم التشفير وجعلها في متناول المستخدم العربي</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mt-1 ml-2"></i>
+                        <span>بناء مجتمع عربي واعٍ بأهمية أمن المعلومات والخصوصية الرقمية</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fas fa-check-circle text-blue-600 mt-1 ml-2"></i>
+                        <span>المساهمة في إثراء المحتوى التقني العربي بمصادر مفتوحة وموثوقة</span>
+                    </li>
+                </ul>
+                <p class="text-gray-700">
+                    هذا المشروع مفتوح المصدر بالكامل، مما يعني أنه يمكن للمجتمع المساهمة في تحسينه وتطويره، كما يمكن استخدامه كأداة تعليمية في المؤسسات التعليمية العربية.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Available Tools Section -->
+    <section class="py-20 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="gradient-text">الأدوات المتاحة</span>
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Tool 1 -->
+                <div class="bg-white rounded-xl p-6 shadow-md transform transition-all duration-300 hover:shadow-lg">
+                    <div class="rounded-full bg-blue-100 w-14 h-14 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-wallet text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">منشئ المحافظ</h3>
+                    <p class="text-gray-600 text-center">
+                        إنشاء عبارات بذرية، مفاتيح خاصة وعناوين عامة للعملات المشفرة
+                    </p>
+                </div>
+                
+                <!-- Tool 2 -->
+                <div class="bg-white rounded-xl p-6 shadow-md transform transition-all duration-300 hover:shadow-lg">
+                    <div class="rounded-full bg-indigo-100 w-14 h-14 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-key text-2xl text-indigo-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">تشفير وفك تشفير AES</h3>
+                    <p class="text-gray-600 text-center">
+                        تشفير وفك تشفير البيانات باستخدام خوارزمية التشفير المتقدمة AES
+                    </p>
+                </div>
+                
+                <!-- Tool 3 -->
+                <div class="bg-white rounded-xl p-6 shadow-md transform transition-all duration-300 hover:shadow-lg">
+                    <div class="rounded-full bg-purple-100 w-14 h-14 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-hashtag text-2xl text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">تحويل النص إلى Hash</h3>
+                    <p class="text-gray-600 text-center">
+                        توليد شيفرات التجزئة (Hash) باستخدام خوارزميات MD5، SHA-1، SHA-256، SHA-512، وRIPEMD-160
+                    </p>
+                </div>
+                
+                <!-- Tool 4 -->
+                <div class="bg-white rounded-xl p-6 shadow-md transform transition-all duration-300 hover:shadow-lg">
+                    <div class="rounded-full bg-green-100 w-14 h-14 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-signature text-2xl text-green-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">التوقيع الرقمي</h3>
+                    <p class="text-gray-600 text-center">
+                        إنشاء والتحقق من التوقيعات الرقمية للرسائل باستخدام تقنية RSA
+                    </p>
+                </div>
+                
+                <!-- Tool 5 -->
+                <div class="bg-white rounded-xl p-6 shadow-md transform transition-all duration-300 hover:shadow-lg">
+                    <div class="rounded-full bg-red-100 w-14 h-14 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-exchange-alt text-2xl text-red-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">تحويل Base64</h3>
+                    <p class="text-gray-600 text-center">
+                        تشفير وفك تشفير البيانات بصيغة Base64 للنقل الآمن للبيانات
+                    </p>
+                </div>
+                
+                <!-- Tool 6 -->
+                <div class="bg-white rounded-xl p-6 shadow-md transform transition-all duration-300 hover:shadow-lg">
+                    <div class="rounded-full bg-yellow-100 w-14 h-14 flex items-center justify-center mb-4 mx-auto">
+                        <i class="fas fa-key text-2xl text-yellow-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-center mb-3">مولد مفاتيح RSA</h3>
+                    <p class="text-gray-600 text-center">
+                        إنشاء أزواج مفاتيح RSA للتشفير غير المتماثل والتوقيعات الرقمية
+                    </p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <a href="CryptoTools.html" class="inline-block py-3 px-8 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all transform hover:scale-105">
+                    استخدم جميع الأدوات الآن
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About the Creator Section -->
+    <section id="about" class="py-20 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-4xl font-bold text-center mb-16">
+                <span class="gradient-text">عن المطور</span>
+            </h2>
+            
+            <div class="max-w-3xl mx-auto bg-white rounded-xl p-8 shadow-lg border border-gray-100">
+                <div class="flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/3 mb-6 md:mb-0">
+                        <img src="https://github.com/devehab.png" alt="إيهاب قهواتي" class="w-32 h-32 rounded-full mx-auto border-4 border-blue-100" />
+                    </div>
+                    <div class="md:w-2/3 md:pr-8">
+                        <h3 class="text-2xl font-bold mb-2">إيهاب قهواتي</h3>
+                        <p class="text-blue-600 mb-4">مطور ومهندس برمجيات</p>
+                        <p class="text-gray-700 mb-6">
+                            مطور برمجيات متخصص في أمن المعلومات والتشفير، بخبرة في تطوير تطبيقات الويب والأمن السيبراني. أسعى لنشر الوعي بأهمية أمن المعلومات وتوفير أدوات سهلة الاستخدام باللغة العربية.
+                        </p>
+                        <div class="flex justify-center md:justify-start space-x-4 space-x-reverse">
+                            <a href="https://github.com/devehab" target="_blank" class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-colors">
+                                <i class="fab fa-github"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/ehabkahwati" target="_blank" class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-colors">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section class="py-20 bg-blue-50">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-12">
+                <span class="gradient-text">دعم المشروع</span>
+            </h2>
+            <div class="max-w-3xl mx-auto bg-white rounded-xl p-10 shadow-lg">
+                <p class="text-gray-700 mb-6">
+                    إذا وجدت أدواتي مفيدة في عملك اليومي، يرجى النظر في دعم عملي! أنا شغوف بكتابة المقالات التعليمية، وبناء تطبيقات الويب مفتوحة المصدر، وإنشاء امتدادات Chrome التي تحل مشاكل حقيقية.
+                </p>
+                
+                <div class="my-8">
+                    <a href="https://www.buymeacoffee.com/ehabkahwati" target="_blank" class="inline-block">
+                        <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" class="h-12">
+                    </a>
+                </div>
+                
+                <p class="text-gray-700 mb-6">
+                    كمطور مستقل، أكرس وقتي لبناء وصيانة تطبيقات ويب وامتدادات Chrome مختلفة مفتوحة المصدر، متاحة مجانًا للجميع. دعمك يساعدني على:
+                </p>
+                
+                <ul class="text-right mb-8 max-w-lg mx-auto">
+                    <li class="flex items-center justify-start mb-3">
+                        <span class="ml-2 text-blue-600">✨</span>
+                        <span>الاستمرار في تطوير ميزات جديدة للمشروع</span>
+                    </li>
+                    <li class="flex items-center justify-start mb-3">
+                        <span class="ml-2 text-blue-600">🐛</span>
+                        <span>إصلاح الأخطاء وصيانة المشروع</span>
+                    </li>
+                    <li class="flex items-center justify-start mb-3">
+                        <span class="ml-2 text-blue-600">🚀</span>
+                        <span>إنشاء أدوات جديدة مفتوحة المصدر للمجتمع العربي</span>
+                    </li>
+                    <li class="flex items-center justify-start mb-3">
+                        <span class="ml-2 text-blue-600">📝</span>
+                        <span>كتابة مقالات تعليمية بالعربية لنشر المعرفة التقنية</span>
+                    </li>
+                </ul>
+                
+                <p class="text-gray-700 mb-6">
+                    حتى المساهمة الصغيرة تساعد في دعم تطوير المحتوى التقني العربي وجعل التكنولوجيا في متناول الجميع.
+                </p>
+                
+                <p class="text-lg font-bold text-blue-600">
+                    شكرًا لدعمكم! ❤️
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 bg-gradient-to-r from-blue-800 to-indigo-900 text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold mb-6">
+                ابدأ استخدام أدوات التشفير الآن
+            </h2>
+            <p class="text-xl mb-10 max-w-2xl mx-auto">
+                جميع الأدوات مجانية، مفتوحة المصدر، وتعمل بشكل آمن داخل متصفحك بدون إرسال أي بيانات للخوادم.
+            </p>
+            <a href="CryptoTools.html" class="inline-block py-4 px-10 bg-white text-blue-700 hover:bg-blue-50 rounded-lg text-lg font-bold transition-all transform hover:scale-105 hover:shadow-lg">
+                استخدم الأدوات مجاناً
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-2xl font-bold mb-6 text-blue-600">
+                <i class="fas fa-lock mr-2"></i>أدوات التشفير
+            </h2>
+            <p class="text-gray-600 mb-8 max-w-xl mx-auto">
+                مجموعة شاملة من أدوات التشفير والأمان الرقمي المصممة للتعليم ونشر الوعي بأمن المعلومات باللغة العربية.
+            </p>
+            <div class="flex justify-center space-x-4 space-x-reverse mb-8">
+                <a href="https://github.com/devehab" target="_blank" class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-colors">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/ehabkahwati" target="_blank" class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-blue-600 hover:bg-blue-100 transition-colors">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+            <p class="text-gray-600 mt-4">
+                <i class="fas fa-code mr-2"></i> مفتوح المصدر تحت رخصة MIT
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
