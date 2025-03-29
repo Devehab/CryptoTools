@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شرح الشهادات الرقمية</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap">
+    
+    <style>
+        /* Apply Tajawal font globally */
+        body {
+            font-family: 'Tajawal', sans-serif;
+            scroll-behavior: smooth; /* Add smooth scrolling */
+        }
+        /* Style for code blocks - Apply Tajawal font */
+        pre {
+            background-color: #1f2937; /* gray-800 for dark code blocks */
+            color: #d1d5db; /* gray-300 */
+            padding: 1rem;
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow-x: auto;
+            direction: ltr; /* Code blocks should be LTR */
+            text-align: left;
+            font-family: 'Tajawal', monospace; /* Use Tajawal, fallback to monospace */
+            font-size: 0.9em; /* Slightly smaller font for code */
+            white-space: pre-wrap; /* Allow wrapping in code blocks */
+            word-wrap: break-word; /* Break long words */
+        }
+        /* Style for inline code and LTR text snippets */
+        code, .ltr-code {
+            font-family: 'Tajawal', monospace; /* Use Tajawal, fallback to monospace */
+            background-color: rgba(229, 231, 235, 0.5); /* Lighter gray background */
+            padding: 0.1em 0.4em; /* Adjusted padding */
+            border-radius: 0.25rem;
+            direction: ltr; /* Ensure LTR direction */
+            unicode-bidi: embed; /* Helps with directionality */
+            display: inline-block; /* Prevents wrapping issues with punctuation */
+            font-size: 0.9em; /* Make inline code slightly smaller */
+            word-break: break-all; /* Break long inline code */
+        }
+        pre code {
+             background-color: transparent; /* Remove background for code inside pre */
+             padding: 0;
+             direction: inherit; /* Inherit direction from pre */
+             display: inline; /* Reset display for code inside pre */
+             font-size: inherit; /* Inherit font size from pre */
+             word-break: inherit;
+        }
+        /* Style for tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        th, td {
+            border: 1px solid #e5e7eb; /* gray-200 */
+            padding: 0.5rem 0.75rem; /* Adjusted padding for smaller screens */
+            text-align: right;
+            vertical-align: top; /* Align content to top */
+        }
+        th {
+            background-color: #f3f4f6; /* gray-100 */
+            font-weight: 700; /* font-bold */
+            color: #374151; /* gray-700 */
+        }
+        /* Responsive table wrapper */
+        .table-wrapper {
+             overflow-x: auto;
+             background-color: #f9fafb; /* gray-50 */
+             padding: 0.5rem; /* Add some padding */
+             border-radius: 0.5rem; /* rounded-lg */
+             border: 1px solid #e5e7eb; /* gray-200 */
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #a0aec0; /* gray-400 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #718096; /* gray-500 */
+        }
+        /* Add subtle hover effect to sections */
+        section:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        /* Styling for section headers */
+        h2 {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem; /* space between icon and text */
+        }
+        h2 i {
+            font-size: 0.8em; /* Make icon slightly smaller relative to text */
+        }
+        /* Ensure LTR text in tables uses correct font and direction */
+        td .ltr-code {
+            font-size: 0.95em; /* Adjust size if needed */
+        }
+
+        /* Responsive Adjustments */
+        @media (min-width: 768px) { /* md breakpoint */
+            th, td {
+                padding: 0.75rem 1rem; /* Restore larger padding on medium screens */
+            }
+            .table-wrapper {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-b from-gray-50 to-indigo-50 text-gray-800 leading-relaxed">
+
+    
+    <nav class="sticky top-0 bg-white/90 backdrop-blur-md z-10 shadow-sm border-b border-gray-200">
+        <div class="container mx-auto px-4"> 
+            <ul class="flex flex-wrap justify-center gap-x-2 gap-y-1 py-2 text-xs sm:text-sm font-medium text-indigo-700"> 
+                 <li><a href="#what-is-certificate" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">ما هي؟</a></li>
+                 <li><a href="#benefits" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">فوائدها</a></li>
+                 <li><a href="#usage" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">استخداماتها</a></li>
+                 <li><a href="#create-certificate" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">إنشاؤها</a></li>
+                 <li><a href="#authenticity" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">ضمان الأصالة</a></li>
+                 <li><a href="#files-involved" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">الملفات</a></li>
+                 <li><a href="#extensions" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">الامتدادات</a></li>
+                 <li><a href="#csr-explained" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap"><code class="ltr-code bg-transparent p-0">CSR</code></a></li>
+                 <li><a href="#ca-trust" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">ثقة <code class="ltr-code bg-transparent p-0">CA</code></a></li>
+                 <li><a href="#https-encryption" class="hover:text-indigo-900 hover:bg-indigo-50 rounded px-2 sm:px-3 py-1 block whitespace-nowrap">تشفير <code class="ltr-code bg-transparent p-0">HTTPS</code></a></li>
+             </ul>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-10 max-w-5xl"> 
+        <header class="text-center my-8 md:my-16"> 
+            <i class="fas fa-shield-halved text-5xl md:text-6xl text-indigo-500 mb-4"></i>
+            
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-indigo-800 mb-4">كل ما تحتاج معرفته عن الشهادات الرقمية</h1>
+            <p class="text-base sm:text-lg text-gray-600">شرح شامل ومبسط لمفهوم الشهادات الرقمية واستخداماتها وأمانها</p>
+        </header>
+
+        
+        <section id="what-is-certificate" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-certificate fa-fw text-yellow-500"></i> ما هي <strong class="text-indigo-800">الشهادة الرقمية (Digital Certificate)</strong>؟
+            </h2>
+            <p class="mb-4 text-base sm:text-lg">هي <strong class="text-indigo-700">بطاقة تعريف إلكترونية</strong> <i class="fas fa-id-card text-gray-400 ml-1"></i> تُثبت هوية الشخص أو الجهة التي توقع الملفات أو ترسل رسائل مشفرة.</p>
+            <p class="mb-5 text-base sm:text-lg">تشبه جواز السفر <i class="fas fa-passport text-gray-400 ml-1"></i>، لكنها رقمية. تحتوي على:</p>
+            <div class="table-wrapper"> 
+                <table class="min-w-full bg-white border-gray-300 rounded-lg shadow-sm text-sm sm:text-base"> 
+                    <thead class="bg-indigo-100">
+                        <tr>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-indigo-800 text-xs sm:text-sm uppercase tracking-wider">العنصر</th>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-indigo-800 text-xs sm:text-sm uppercase tracking-wider">الوصف</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4 whitespace-nowrap"><i class="fas fa-user fa-fw w-5 text-center mr-2 text-gray-500"></i><strong class="text-gray-900">الاسم</strong></td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4">اسم الشخص أو الشركة</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4 whitespace-nowrap"><i class="fas fa-envelope fa-fw w-5 text-center mr-2 text-gray-500"></i><strong class="text-gray-900">البريد الإلكتروني</strong></td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4">المرتبط بالتوقيع</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4 whitespace-nowrap"><i class="fas fa-key fa-fw w-5 text-center mr-2 text-green-500"></i><strong class="text-gray-900">المفتاح العام (Public Key)</strong></td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4">يُستخدم للتحقق من التوقيع أو لتشفير الرسائل</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4 whitespace-nowrap"><i class="fas fa-building-shield fa-fw w-5 text-center mr-2 text-blue-500"></i><strong class="text-gray-900">جهة موثوقة (CA)</strong></td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4">تصدر الشهادة وتُؤكد أن صاحبها حقيقي</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4 whitespace-nowrap"><i class="fas fa-calendar-alt fa-fw w-5 text-center mr-2 text-red-500"></i><strong class="text-gray-900">تاريخ صلاحية</strong></td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4">متى تبدأ وتنتهي الشهادة</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        
+        <section id="benefits" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-shield-alt fa-fw text-green-500"></i> ما فائدة الشهادة الرقمية؟
+            </h2>
+            <ul class="space-y-4 text-sm sm:text-base">
+                <li class="flex items-start p-3 sm:p-4 bg-green-50 rounded-lg border border-green-200">
+                    <i class="fas fa-user-check text-green-600 fa-fw w-5 sm:w-6 text-lg sm:text-xl mt-1 ml-3 flex-shrink-0"></i>
+                    <div>
+                        <strong class="text-indigo-700 text-base sm:text-lg">1. التحقق من الهوية (Authentication):</strong>
+                        <p class="text-gray-700 mt-1">تضمن أن الشخص أو الجهة التي وقعت الملف هي فعلًا من تدعي أنها كذلك.</p>
+                    </div>
+                </li>
+                <li class="flex items-start p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+                    <i class="fas fa-file-contract text-blue-600 fa-fw w-5 sm:w-6 text-lg sm:text-xl mt-1 ml-3 flex-shrink-0"></i>
+                    <div>
+                        <strong class="text-indigo-700 text-base sm:text-lg">2. سلامة الملف (Integrity):</strong>
+                        <p class="text-gray-700 mt-1">تُثبت أن الملف لم يتم تغييره أو العبث به بعد التوقيع.</p>
+                    </div>
+                </li>
+                <li class="flex items-start p-3 sm:p-4 bg-red-50 rounded-lg border border-red-200">
+                    <i class="fas fa-ban text-red-600 fa-fw w-5 sm:w-6 text-lg sm:text-xl mt-1 ml-3 flex-shrink-0"></i>
+                    <div>
+                        <strong class="text-indigo-700 text-base sm:text-lg">3. عدم الإنكار (Non-repudiation):</strong>
+                        <p class="text-gray-700 mt-1">لا يمكن للمرسل أن ينكر لاحقًا أنه هو من وقّع هذا الملف.</p>
+                    </div>
+                </li>
+                <li class="flex items-start p-3 sm:p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <i class="fas fa-handshake text-yellow-600 fa-fw w-5 sm:w-6 text-lg sm:text-xl mt-1 ml-3 flex-shrink-0"></i>
+                    <div>
+                        <strong class="text-indigo-700 text-base sm:text-lg">4. بناء الثقة:</strong>
+                        <p class="text-gray-700 mt-1">إذا كانت الشهادة من جهة موثوقة (CA)، فإن الأنظمة تثق بالتوقيع مباشرة (يظهر لك <i class="fas fa-check-circle text-green-600"></i> أخضر).</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+
+        
+        <section id="usage" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-map-marked-alt fa-fw text-blue-500"></i> أين تُستخدم الشهادات الرقمية؟
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 text-sm sm:text-base text-gray-700">
+                 <div class="flex items-center p-3 bg-gray-50 rounded-lg border">
+                     <i class="fas fa-file-pdf fa-fw text-lg sm:text-xl text-red-500 ml-3"></i>
+                     <span>توقيع ملفات <code class="ltr-code">PDF</code> (عقود، تقارير، فواتير)</span>
+                 </div>
+                 <div class="flex items-center p-3 bg-gray-50 rounded-lg border">
+                     <i class="fas fa-envelope-open-text fa-fw text-lg sm:text-xl text-teal-500 ml-3"></i>
+                     <span>توقيع رسائل البريد الإلكتروني (<code class="ltr-code">S/MIME</code>)</span>
+                 </div>
+                 <div class="flex items-center p-3 bg-gray-50 rounded-lg border">
+                     <i class="fas fa-code fa-fw text-lg sm:text-xl text-purple-500 ml-3"></i>
+                     <span>توقيع البرامج والتطبيقات (Code Signing)</span>
+                 </div>
+                 <div class="flex items-center p-3 bg-gray-50 rounded-lg border">
+                     <i class="fas fa-lock fa-fw text-lg sm:text-xl text-green-500 ml-3"></i>
+                     <span>تأمين المواقع الإلكترونية (<code class="ltr-code">HTTPS/SSL/TLS</code>)</span>
+                 </div>
+            </div>
+        </section>
+
+        
+        <section id="do-i-need" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+             <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-question-circle fa-fw text-orange-500"></i> هل أحتاج شهادة رقمية لتوقيع ملف؟
+            </h2>
+            <p class="mb-6 text-base sm:text-lg">لديك خياران رئيسيان:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div class="bg-gradient-to-br from-blue-50 to-blue-100 p-4 sm:p-6 rounded-lg border border-blue-200 shadow-sm">
+                    <h3 class="font-semibold text-lg sm:text-xl text-blue-800 mb-3 flex items-center"><i class="fas fa-building-shield fa-fw mr-2"></i> شهادة من شركة موثوقة (CA)</h3>
+                    <ul class="list-disc pr-5 space-y-2 text-sm sm:text-base text-blue-700">
+                        <li><i class="fas fa-star text-yellow-500 mr-1"></i> تستخدمها الشركات والمؤسسات الرسمية.</li>
+                        <li><i class="fas fa-check-circle text-green-500 mr-1"></i> تظهر تلقائيًا كموثوقة في الأنظمة.</li>
+                        <li><i class="fas fa-dollar-sign text-gray-500 mr-1"></i> غالبًا تكون مدفوعة (باستثناء <code class="ltr-code">Let's Encrypt</code> للمواقع).</li>
+                    </ul>
+                </div>
+                <div class="bg-gradient-to-br from-green-50 to-green-100 p-4 sm:p-6 rounded-lg border border-green-200 shadow-sm">
+                    <h3 class="font-semibold text-lg sm:text-xl text-green-800 mb-3 flex items-center"><i class="fas fa-user-edit fa-fw mr-2"></i> شهادة ذاتية التوقيع (Self-signed)</h3>
+                    <ul class="list-disc pr-5 space-y-2 text-sm sm:text-base text-green-700">
+                        <li><i class="fas fa-tools text-gray-500 mr-1"></i> تنشئها بنفسك باستخدام أدوات مثل <code class="ltr-code">OpenSSL</code> أو <code class="ltr-code">GPG</code>.</li>
+                        <li><i class="fas fa-gift text-blue-500 mr-1"></i> مجانية وسهلة الإنشاء.</li>
+                        <li><i class="fas fa-exclamation-triangle text-yellow-600 mr-1"></i> تتطلب من الطرف الآخر الوثوق بها يدويًا.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="example-adobe" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fab fa-adobe fa-fw text-red-500"></i> مثال عملي: التوقيع في <code class="ltr-code">Adobe Acrobat</code>
+            </h2>
+            <p class="mb-4 text-base sm:text-lg">عندما تفتح ملف <code class="ltr-code">PDF</code> موقّع:</p>
+            <div class="flex flex-col md:flex-row gap-4 md:gap-6">
+                <div class="flex-1">
+                    <p class="mb-3 font-semibold text-gray-800 text-sm sm:text-base">1. شهادة من جهة موثوقة (CA):</p>
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-800 p-3 sm:p-4 rounded-r-lg h-full text-sm sm:text-base" role="alert">
+                        <p class="font-bold flex items-center"><i class="fas fa-check-circle fa-fw mr-2"></i> يظهر للمستقبل:</p>
+                        <p class="mt-1">"تم التحقق من التوقيع، التوقيع صالح"</p>
+                        <p class="mt-1 text-xs sm:text-sm text-green-600">(<span class="ltr-code">Signature is Valid and Trusted</span>)</p>
+                    </div>
+                </div>
+                <div class="flex-1">
+                     <p class="mb-3 font-semibold text-gray-800 text-sm sm:text-base">2. شهادة ذاتية التوقيع (Self-Signed):</p>
+                    <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-3 sm:p-4 rounded-r-lg h-full text-sm sm:text-base" role="alert">
+                        <p class="font-bold flex items-center"><i class="fas fa-exclamation-triangle fa-fw mr-2"></i> يظهر تحذير:</p>
+                        <p class="mt-1">"لم يتم التحقق من هوية الموقّع"</p>
+                         <p class="mt-1 text-xs sm:text-sm text-yellow-600">(<span class="ltr-code">Signer's identity is unknown</span>)</p>
+                        <p class="mt-2 text-xs">ويحتاج المستلم للضغط على "<span class="ltr-code">Trust Signature</span>" يدويًا.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        
+        <section id="create-certificate" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+             <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-magic fa-fw text-purple-500"></i> كيف تُنشئ شهادة رقمية؟
+            </h2>
+
+            <div class="mb-8 p-4 sm:p-6 border rounded-lg bg-gray-50">
+                <h3 class="text-xl sm:text-2xl font-semibold text-green-700 mb-4 flex items-center"><i class="fas fa-user-check fa-fw mr-2"></i> 1. إنشاء شهادة رقمية <strong class="text-green-800">ذاتية التوقيع (Self-signed)</strong></h3>
+                <p class="mb-4 text-sm sm:text-base text-gray-700">مفيدة للتجارب الشخصية أو بين أطراف تثق ببعضها مسبقًا.</p>
+                <h4 class="font-medium text-gray-800 mb-2 text-sm sm:text-base"><i class="fas fa-terminal mr-1"></i> باستخدام <code class="ltr-code">OpenSSL</code>:</h4>
+                <pre class="mb-4 text-xs sm:text-sm"><code class="language-bash"># الخطوة 1: توليد مفتاح خاص (احفظه بأمان!)
+openssl genrsa -out mykey.pem 2048
+
+# الخطوة 2: توليد شهادة رقمية باستخدام المفتاح الخاص
+# سيطلب منك إدخال بيانات مثل الدولة، الاسم، البريد الإلكتروني
+openssl req -new -x509 -key mykey.pem -out mycert.pem -days 3650 # صالحة لـ 10 سنوات</code></pre>
+                <p class="mt-4 mb-2 text-gray-700 font-semibold text-sm sm:text-base">الناتج:</p>
+                <ul class="list-none space-y-2 text-sm sm:text-base text-gray-600">
+                    <li class="flex items-center"><i class="fas fa-key fa-fw w-5 text-red-600 mr-2"></i> <code class="ltr-code">mykey.pem</code>: المفتاح الخاص (سري جدًا <i class="fas fa-lock ml-1"></i>)</li>
+                    <li class="flex items-center"><i class="fas fa-certificate fa-fw w-5 text-blue-600 mr-2"></i> <code class="ltr-code">mycert.pem</code>: الشهادة الرقمية (يمكن نشرها <i class="fas fa-share-alt ml-1"></i>)</li>
+                </ul>
+            </div>
+
+            <div class="p-4 sm:p-6 border rounded-lg bg-gray-50">
+                <h3 class="text-xl sm:text-2xl font-semibold text-blue-700 mb-4 flex items-center"><i class="fas fa-building fa-fw mr-2"></i> 2. طلب شهادة رقمية من <strong class="text-blue-800">جهة موثوقة (CA)</strong></h3>
+                <p class="mb-4 text-sm sm:text-base text-gray-700">للشركات والمواقع العامة التي تحتاج ثقة تلقائية من المتصفحات والأنظمة.</p>
+                <p class="mb-3 text-sm sm:text-base text-gray-700">أشهر الجهات المصدرة:</p>
+                <div class="flex flex-wrap gap-2 mb-4 text-xs sm:text-sm">
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded"><code class="ltr-code bg-transparent p-0">DigiCert</code></span>
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded"><code class="ltr-code bg-transparent p-0">GlobalSign</code></span>
+                    <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded"><code class="ltr-code bg-transparent p-0">Sectigo</code></span>
+                    <span class="bg-green-100 text-green-800 px-2 py-1 rounded"><code class="ltr-code bg-transparent p-0">Let's Encrypt</code> (للمواقع)</span>
+                </div>
+                <p class="mb-2 text-gray-700 font-semibold text-sm sm:text-base">الخطوات العامة:</p>
+                <ol class="list-decimal pr-5 space-y-2 text-sm sm:text-base text-gray-600">
+                    <li><i class="fas fa-file-signature mr-1"></i> تُنشئ <strong class="text-indigo-700">طلب توقيع شهادة (<code class="ltr-code">CSR</code>)</strong> باستخدام مفتاحك الخاص (سنشرحه لاحقًا).</li>
+                    <li><i class="fas fa-paper-plane mr-1"></i> ترسله للجهة المصدرة (CA) عبر موقعها.</li>
+                    <li><i class="fas fa-user-shield mr-1"></i> تتحقق الجهة من هويتك أو ملكيتك للنطاق (Domain Validation).</li>
+                    <li><i class="fas fa-download mr-1"></i> ترسل لك الجهة الشهادة الموقعة (مثل <code class="ltr-code">certificate.crt</code>).</li>
+                </ol>
+            </div>
+        </section>
+
+        
+        <section id="authenticity" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-stamp fa-fw text-teal-500"></i> كيف نضمن أن الشهادة أصلية ولم يتم العبث بها؟
+            </h2>
+
+            <div class="mb-6 p-3 sm:p-4 border-l-4 border-blue-400 bg-blue-50 rounded-r-lg">
+                <h3 class="text-lg sm:text-xl font-semibold text-blue-700 mb-3"><i class="fas fa-check-double mr-1"></i> في حالة الشهادات من CA (موثوقة):</h3>
+                <ul class="list-disc pr-5 space-y-2 text-sm sm:text-base text-gray-700">
+                    <li>يتم توقيع شهادتك من قبل <strong class="text-blue-800">سلطة موثوقة (CA)</strong> باستخدام مفتاحها الخاص السري.</li>
+                    <li>برامج مثل المتصفحات و<code class="ltr-code">Adobe</code> لديها قائمة بالـ CAs الموثوقة ومفاتيحها العامة للتحقق.</li>
+                    <li>يتم التحقق أوتوماتيكيًا من <strong class="text-blue-800">سلسلة الثقة (Chain of Trust)</strong> وصولًا إلى CA الجذرية الموثوقة.</li>
+                    <li>إذا تم تعديل أي جزء في الشهادة، سيفشل التحقق من توقيع الـ CA <i class="fas fa-times-circle text-red-600 ml-1"></i>.</li>
+                </ul>
+            </div>
+
+            <div class="mb-6 p-3 sm:p-4 border-l-4 border-green-400 bg-green-50 rounded-r-lg">
+                <h3 class="text-lg sm:text-xl font-semibold text-green-700 mb-3"><i class="fas fa-user-shield mr-1"></i> في حالة الشهادات الذاتية (غير موثوقة افتراضيًا):</h3>
+                 <ul class="list-disc pr-5 space-y-2 text-sm sm:text-base text-gray-700">
+                    <li>لا يوجد CA خارجي للتحقق من صحتها.</li>
+                    <li>الشخص الذي يستلم الشهادة <strong class="text-green-800">يجب أن يتحقق من صحتها بنفسه</strong> قبل الوثوق بها.</li>
+                    <li>الطريقة الشائعة هي مقارنة <strong class="text-gray-800">بصمة الشهادة (Fingerprint)</strong>.</li>
+                </ul>
+            </div>
+
+             <div class="p-4 border rounded-lg bg-gray-100">
+                <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-3 flex items-center"><i class="fas fa-fingerprint fa-fw mr-2 text-gray-500"></i> التحقق باستخدام بصمة الشهادة (Fingerprint):</h3>
+                <p class="mb-3 text-sm sm:text-base text-gray-700">كل شهادة لها بصمة فريدة (ناتج Hash مثل <code class="ltr-code">SHA-256</code>). يمكنك حسابها باستخدام:</p>
+                <pre class="mb-3 text-xs sm:text-sm"><code class="language-bash">openssl x509 -in mycert.pem -noout -fingerprint -sha256</code></pre>
+                 <p class="text-sm sm:text-base text-gray-700">ترسل هذه البصمة (النص الطويل الناتج) للطرف الآخر عبر قناة آمنة (مكالمة، رسالة موثوقة). الطرف الآخر يحسب البصمة للشهادة التي استلمها ويقارنها. إذا تطابقت = الشهادة أصلية.</p>
+            </div>
+        </section>
+
+         
+        <section id="files-involved" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-folder-tree fa-fw text-orange-500"></i> الملفات الأساسية ودورها
+            </h2>
+            <p class="mb-6 text-base sm:text-lg">عند التعامل مع الشهادات، ستواجه غالبًا هذه الأنواع من الملفات:</p>
+            <div class="table-wrapper">
+                <table class="min-w-full bg-white border-gray-300 rounded-lg shadow-sm text-sm sm:text-base">
+                     <thead class="bg-indigo-100">
+                        <tr>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-indigo-800 text-xs sm:text-sm uppercase tracking-wider">الملف</th>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-indigo-800 text-xs sm:text-sm uppercase tracking-wider">الوصف</th>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-indigo-800 text-xs sm:text-sm uppercase tracking-wider">الاستخدام الأساسي</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-red-700 flex items-center"><i class="fas fa-key fa-fw mr-2"></i>المفتاح الخاص (Private Key)</strong></td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4">ملف سري جدًا، يجب أن يبقى بحوزتك فقط.</td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-red-700">لتوقيع الملفات</strong> أو فك تشفير البيانات المرسلة لك.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-blue-700 flex items-center"><i class="fas fa-certificate fa-fw mr-2"></i>الشهادة الرقمية (Certificate)</strong></td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4">تحتوي بياناتك + مفتاحك العام + توقيع CA (إن وجدت).</td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-blue-700">لإثبات هويتك</strong> للطرف الآخر وتمكينه من التحقق.</td>
+                        </tr>
+                        <tr>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-green-700 flex items-center"><i class="fas fa-unlock-alt fa-fw mr-2"></i>المفتاح العام (Public Key)</strong></td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4">يمكن نشره بأمان، وهو جزء من الشهادة.</td>
+                            <td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-green-700">للتحقق من توقيعك</strong> أو تشفير بيانات لك.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mt-8 mb-4"><i class="fas fa-exchange-alt fa-fw mr-2"></i> سيناريو التوقيع والتحقق (مثال <code class="ltr-code">OpenSSL</code>)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm sm:text-base">
+                <div class="p-4 sm:p-6 border rounded-lg bg-gray-50">
+                    <h4 class="font-medium text-base sm:text-lg text-gray-800 mb-3 flex items-center"><i class="fas fa-pen-alt fa-fw mr-2 text-blue-600"></i> 1. أنت المرسل (التوقيع)</h4>
+                    <p class="mb-3 text-gray-700">تستخدم <strong class="text-red-700">مفتاحك الخاص</strong> لتوقيع الملف:</p>
+                    <pre class="mb-4 text-xs sm:text-sm"><code class="language-bash"># توقيع ملف document.pdf باستخدام mykey.pem
+openssl dgst -sha256 -sign mykey.pem -out document.sig document.pdf</code></pre>
+                    <p class="mb-2 text-gray-700 font-semibold">ترسل للطرف الآخر:</p>
+                    <ul class="list-none space-y-1 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-file-pdf fa-fw w-5 text-red-500 mr-2"></i> <code class="ltr-code">document.pdf</code> (الأصلي)</li>
+                        <li class="flex items-center"><i class="fas fa-signature fa-fw w-5 text-purple-500 mr-2"></i> <code class="ltr-code">document.sig</code> (التوقيع)</li>
+                        <li class="flex items-center"><i class="fas fa-certificate fa-fw w-5 text-blue-500 mr-2"></i> <code class="ltr-code">mycert.pem</code> (شهادتك)</li>
+                    </ul>
+                </div>
+
+                <div class="p-4 sm:p-6 border rounded-lg bg-gray-50">
+                    <h4 class="font-medium text-base sm:text-lg text-gray-800 mb-3 flex items-center"><i class="fas fa-check-double fa-fw mr-2 text-green-600"></i> 2. الطرف الآخر (التحقق)</h4>
+                    <p class="mb-3 text-gray-700">يستخدم <strong class="text-blue-700">شهادتك</strong> (التي تحتوي على مفتاحك العام) للتحقق:</p>
+                    <pre class="mb-4 text-xs sm:text-sm"><code class="language-bash"># استخراج المفتاح العام من الشهادة والتحقق من التوقيع
+openssl dgst -sha256 \
+ -verify &lt;(openssl x509 -in mycert.pem -pubkey -noout) \
+ -signature document.sig \
+ document.pdf</code></pre>
+                    <p class="text-gray-700 font-semibold">النتيجة:</p>
+                    <ul class="list-none space-y-1 text-gray-600">
+                        <li class="flex items-center"><i class="fas fa-check fa-fw w-5 text-green-500 mr-2"></i> "<span class="ltr-code">Verified OK</span>" (إذا كان التوقيع صحيحًا ولم يتغير الملف)</li>
+                        <li class="flex items-center"><i class="fas fa-times fa-fw w-5 text-red-500 mr-2"></i> "<span class="ltr-code">Verification Failure</span>" (إذا كان التوقيع غير صحيح أو تم تعديل الملف)</li>
+                    </ul>
+                </div>
+            </div>
+
+             <div class="mt-8 bg-red-100 border-l-4 border-red-500 text-red-800 p-3 sm:p-4 rounded-r-lg text-sm sm:text-base" role="alert">
+                <p class="font-bold flex items-center"><i class="fas fa-exclamation-triangle fa-fw mr-2"></i> تذكير هام بالأمان:</p>
+                <p><strong>المفتاح الخاص (Private Key)</strong> هو هويتك الرقمية السرية. حافظ عليه بأمان مطلق ولا تشاركه أبدًا!</p>
+            </div>
+        </section>
+
+        
+        <section id="certificate-content" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-puzzle-piece fa-fw text-cyan-500"></i> مكونات الشهادة الرقمية ووظائفها
+            </h2>
+            <p class="mb-6 text-base sm:text-lg">لماذا تحتوي الشهادة على كل هذه الأجزاء؟ كل جزء له دور حيوي في بناء الثقة:</p>
+
+            <div class="space-y-6 text-sm sm:text-base">
+                <div class="p-3 sm:p-4 border rounded-lg bg-gray-50">
+                    <h3 class="text-lg sm:text-xl font-semibold text-gray-700 mb-2 flex items-center"><i class="fas fa-id-card fa-fw mr-2 text-gray-500"></i> 1. بيانات الهوية (Subject)</h3>
+                    <p class="mb-2 text-gray-700"><strong>الهدف:</strong> تحديد هوية صاحب الشهادة (من أنت؟).</p>
+                    <p class="text-xs sm:text-sm text-gray-600">تشمل: الاسم الشائع (<code class="ltr-code">CN</code>)، المؤسسة (<code class="ltr-code">O</code>)، الدولة (<code class="ltr-code">C</code>)، البريد الإلكتروني، إلخ.</p>
+                    <blockquote class="mt-2 border-r-4 border-gray-300 pr-3 text-xs sm:text-sm italic text-gray-500">
+                        مثال: <code class="ltr-code bg-transparent p-0">CN=ahmad.example.com, O=Robotics Lab, C=JO</code>
+                    </blockquote>
+                </div>
+
+                <div class="p-3 sm:p-4 border rounded-lg bg-gray-50">
+                    <h3 class="text-lg sm:text-xl font-semibold text-green-700 mb-2 flex items-center"><i class="fas fa-unlock-alt fa-fw mr-2"></i> 2. المفتاح العام (Public Key)</h3>
+                    <p class="mb-2 text-gray-700"><strong>الهدف:</strong> تمكين الآخرين من التحقق من توقيعك أو تشفير بيانات لك.</p>
+                    <p class="text-xs sm:text-sm text-gray-600">هو المفتاح المقابل لمفتاحك الخاص السري.</p>
+                </div>
+
+                <div class="p-3 sm:p-4 border rounded-lg bg-gray-50">
+                    <h3 class="text-lg sm:text-xl font-semibold text-blue-700 mb-2 flex items-center"><i class="fas fa-signature fa-fw mr-2"></i> 3. توقيع الجهة المصدِرة (CA Signature)</h3>
+                    <p class="mb-2 text-gray-700"><strong>الهدف:</strong> ضمان أن الشهادة لم يتم تزويرها وأن المعلومات فيها صحيحة ومُحققة.</p>
+                    <p class="text-xs sm:text-sm text-gray-600">الـ CA توقع بيانات الشهادة + مفتاحك العام باستخدام مفتاحها الخاص. الأنظمة تثق بالـ CA وتستخدم مفتاحها العام للتحقق من هذا التوقيع.</p>
+                    <p class="text-xs sm:text-sm text-gray-500 mt-1">(في الشهادات الذاتية، أنت من يوقع، لذا لا يوجد هذا الضمان الخارجي).</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mt-8 mb-4"><i class="fas fa-list-check fa-fw mr-2"></i> خلاصة وظائف المكونات</h3>
+             <div class="table-wrapper">
+                <table class="min-w-full bg-white border-gray-300 rounded-lg shadow-sm text-sm sm:text-base">
+                     <thead class="bg-indigo-100">
+                        <tr>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-indigo-800 text-xs sm:text-sm uppercase tracking-wider">المكون</th>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-indigo-800 text-xs sm:text-sm uppercase tracking-wider">الوظيفة الأساسية</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4"><strong>بيانات الهوية</strong></td><td class="px-4 py-3 sm:px-6 sm:py-4">تحديد صاحب الشهادة <i class="fas fa-user ml-1"></i></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4"><strong>المفتاح العام</strong></td><td class="px-4 py-3 sm:px-6 sm:py-4">أداة التحقق والتشفير <i class="fas fa-search-plus ml-1"></i></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4"><strong>توقيع الجهة المصدِرة (CA)</strong></td><td class="px-4 py-3 sm:px-6 sm:py-4">ضمان الأصالة والثقة <i class="fas fa-stamp ml-1"></i></td></tr>
+                    </tbody>
+                </table>
+             </div>
+        </section>
+
+        
+        <section id="extensions" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-file-code fa-fw text-pink-500"></i> فهم امتدادات الملفات الشائعة
+            </h2>
+            <p class="mb-6 text-base sm:text-lg">قد تبدو الامتدادات مربكة، لكنها غالبًا ما تشير إلى تنسيق الملف أو محتواه:</p>
+
+            <div class="space-y-6 text-sm sm:text-base">
+                <div class="p-3 sm:p-4 border rounded-lg bg-red-50 border-red-200">
+                    <h4 class="font-medium text-base sm:text-lg text-red-800 mb-2 flex items-center"><i class="fas fa-key fa-fw mr-2"></i> امتدادات المفتاح الخاص</h4>
+                    <table class="w-full text-xs sm:text-sm mt-2">
+                        <tr class="border-b"><td class="p-2"><code class="ltr-code">.pem</code></td><td class="p-2">تنسيق نصي (Base64)، الأكثر شيوعًا، قد يحتوي مفتاحًا أو شهادة.</td></tr>
+                        <tr class="border-b"><td class="p-2"><code class="ltr-code">.key</code></td><td class="p-2">عادة ما يكون مفتاحًا خاصًا بتنسيق PEM.</td></tr>
+                        <tr><td class="p-2"><code class="ltr-code">.p12</code> / <code class="ltr-code">.pfx</code></td><td class="p-2">تنسيق ثنائي (PKCS#12)، يجمع المفتاح الخاص والشهادة معًا، محمي بكلمة مرور.</td></tr>
+                    </table>
+                    <p class="mt-2 text-xs text-red-600 font-semibold"><i class="fas fa-exclamation-circle mr-1"></i> هذه الملفات سرية للغاية!</p>
+                </div>
+
+                <div class="p-3 sm:p-4 border rounded-lg bg-blue-50 border-blue-200">
+                    <h4 class="font-medium text-base sm:text-lg text-blue-800 mb-2 flex items-center"><i class="fas fa-certificate fa-fw mr-2"></i> امتدادات الشهادة الرقمية</h4>
+                     <table class="w-full text-xs sm:text-sm mt-2">
+                        <tr class="border-b"><td class="p-2"><code class="ltr-code">.pem</code></td><td class="p-2">شهادة بتنسيق نصي (Base64).</td></tr>
+                        <tr class="border-b"><td class="p-2"><code class="ltr-code">.crt</code> / <code class="ltr-code">.cer</code></td><td class="p-2">عادة ما تكون شهادة بتنسيق PEM أو DER.</td></tr>
+                        <tr class="border-b"><td class="p-2"><code class="ltr-code">.der</code></td><td class="p-2">شهادة بتنسيق ثنائي (Binary).</td></tr>
+                        <tr><td class="p-2"><code class="ltr-code">.p7b</code> / <code class="ltr-code">.p7c</code></td><td class="p-2">تنسيق PKCS#7، يحتوي عادة على الشهادة وسلسلة الثقة (بدون المفتاح الخاص).</td></tr>
+                    </table>
+                 </div>
+
+                 <div class="p-3 sm:p-4 border rounded-lg bg-green-50 border-green-200">
+                    <h4 class="font-medium text-base sm:text-lg text-green-800 mb-2 flex items-center"><i class="fas fa-unlock-alt fa-fw mr-2"></i> امتدادات المفتاح العام</h4>
+                     <table class="w-full text-xs sm:text-sm mt-2">
+                        <tr class="border-b"><td class="p-2"><code class="ltr-code">.pem</code></td><td class="p-2">مفتاح عام بتنسيق نصي (Base64).</td></tr>
+                        <tr><td class="p-2"><code class="ltr-code">.pub</code></td><td class="p-2">شائع في <code class="ltr-code">SSH</code> و <code class="ltr-code">GPG</code>، مفتاح عام فقط.</td></tr>
+                        <tr><td class="p-2">(مستخرج)</td><td class="p-2">يمكن استخراجه من الشهادة أو المفتاح الخاص.</td></tr>
+                    </table>
+                 </div>
+
+                 <div class="p-3 sm:p-4 border rounded-lg bg-purple-50 border-purple-200">
+                    <h4 class="font-medium text-base sm:text-lg text-purple-800 mb-2 flex items-center"><i class="fas fa-signature fa-fw mr-2"></i> امتدادات التوقيع الرقمي</h4>
+                     <table class="w-full text-xs sm:text-sm mt-2">
+                        <tr class="border-b"><td class="p-2"><code class="ltr-code">.sig</code></td><td class="p-2">ملف توقيع منفصل، عادة ثنائي.</td></tr>
+                        <tr class="border-b"><td class="p-2"><code class="ltr-code">.asc</code></td><td class="p-2">توقيع منفصل بتنسيق نصي (ASCII)، شائع في <code class="ltr-code">GPG</code>.</td></tr>
+                        <tr><td class="p-2"><code class="ltr-code">.p7s</code></td><td class="p-2">توقيع بتنسيق PKCS#7، غالبًا ما يكون مرفقًا بالبريد الإلكتروني (<code class="ltr-code">S/MIME</code>).</td></tr>
+                    </table>
+                 </div>
+
+                 <div class="p-3 sm:p-4 border rounded-lg bg-orange-50 border-orange-200">
+                    <h4 class="font-medium text-base sm:text-lg text-orange-800 mb-2 flex items-center"><i class="fas fa-file-signature fa-fw mr-2"></i> امتداد طلب توقيع الشهادة</h4>
+                     <table class="w-full text-xs sm:text-sm mt-2">
+                        <tr><td class="p-2"><code class="ltr-code">.csr</code></td><td class="p-2">ملف طلب توقيع الشهادة، يحتوي معلوماتك ومفتاحك العام، ترسله للـ CA.</td></tr>
+                    </table>
+                 </div>
+            </div>
+
+             <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mt-8 mb-4"><i class="fas fa-lightbulb fa-fw mr-2 text-yellow-500"></i> تلميحات سريعة للتذكر</h3>
+             <div class="table-wrapper bg-yellow-50 border-yellow-200">
+                <table class="min-w-full bg-white border-gray-300 rounded-lg shadow-sm text-sm sm:text-base">
+                     <thead class="bg-yellow-100">
+                        <tr>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-yellow-800 text-xs sm:text-sm uppercase tracking-wider">إذا رأيت...</th>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-yellow-800 text-xs sm:text-sm uppercase tracking-wider">فهو غالبًا...</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.key</code>, <code class="ltr-code">.p12</code>, <code class="ltr-code">.pfx</code>, أو <code class="ltr-code">.pem</code> مع "<span class="ltr-code">PRIVATE KEY</span>"</td><td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-red-700">مفتاح خاص (سري!)</strong></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.crt</code>, <code class="ltr-code">.cer</code>, أو <code class="ltr-code">.pem</code> مع "<span class="ltr-code">CERTIFICATE</span>"</td><td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-blue-700">شهادة رقمية</strong></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.pub</code>, أو <code class="ltr-code">.pem</code> مع "<span class="ltr-code">PUBLIC KEY</span>"</td><td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-green-700">مفتاح عام</strong></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.sig</code>, <code class="ltr-code">.asc</code>, <code class="ltr-code">.p7s</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-purple-700">ملف توقيع رقمي</strong></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.csr</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><strong class="text-orange-700">طلب توقيع شهادة</strong></td></tr>
+                    </tbody>
+                </table>
+             </div>
+        </section>
+
+        
+        <section id="distinguish-pem" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-search fa-fw text-orange-500"></i> التمييز بين ملفات <code class="ltr-code">.pem</code> المختلفة
+            </h2>
+            <p class="mb-4 text-base sm:text-lg">امتداد <code class="ltr-code">.pem</code> شائع جدًا! كيف تعرف ما بداخله؟</p>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4"><i class="fas fa-file-lines fa-fw mr-2"></i> الطريقة الأضمن: قراءة السطر الأول</h3>
+            <p class="mb-4 text-sm sm:text-base">افتح الملف بأي محرر نصوص. السطر الأول يخبرك بالمحتوى:</p>
+            <pre class="mb-6 text-xs sm:text-sm"><code class="language-text">-----BEGIN PRIVATE KEY-----      # مفتاح خاص (غير مشفر، PKCS#8)
+-----BEGIN RSA PRIVATE KEY-----   # مفتاح خاص (غير مشفر، PKCS#1/RSA)
+-----BEGIN ENCRYPTED PRIVATE KEY----- # مفتاح خاص (مشفر بكلمة مرور)
+-----BEGIN PUBLIC KEY-----       # مفتاح عام
+-----BEGIN CERTIFICATE-----      # شهادة رقمية (X.509)</code></pre>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-4"><i class="fas fa-terminal fa-fw mr-2"></i> الطريقة الآلية: استخدام <code class="ltr-code">OpenSSL</code></h3>
+            <p class="mb-4 text-sm sm:text-base">يمكنك استخدام أوامر <code class="ltr-code">OpenSSL</code> لفحص الملف:</p>
+            <div class="space-y-4 text-sm sm:text-base">
+                 <div class="p-3 border rounded-lg bg-gray-50">
+                    <p class="font-semibold text-gray-700">للتحقق إذا كان شهادة:</p>
+                    <pre class="text-xs sm:text-sm mt-1"><code class="language-bash">openssl x509 -in file.pem -noout -text</code></pre>
+                    <p class="text-xs text-gray-500 mt-1">(إذا نجح الأمر، فهو شهادة)</p>
+                 </div>
+                 <div class="p-3 border rounded-lg bg-gray-50">
+                    <p class="font-semibold text-gray-700">للتحقق إذا كان مفتاح خاص (RSA كمثال):</p>
+                    <pre class="text-xs sm:text-sm mt-1"><code class="language-bash">openssl rsa -in file.pem -check -noout</code></pre>
+                     <p class="text-xs text-gray-500 mt-1">(إذا نجح الأمر، فهو مفتاح خاص RSA صالح)</p>
+                 </div>
+                 <div class="p-3 border rounded-lg bg-gray-50">
+                    <p class="font-semibold text-gray-700">للتحقق إذا كان مفتاح عام:</p>
+                    <pre class="text-xs sm:text-sm mt-1"><code class="language-bash">openssl pkey -in file.pem -pubin -noout</code></pre>
+                     <p class="text-xs text-gray-500 mt-1">(إذا نجح الأمر، فهو مفتاح عام)</p>
+                 </div>
+            </div>
+
+            <div class="mt-6 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-3 sm:p-4 rounded-r-lg text-sm sm:text-base" role="alert">
+                <p class="font-bold flex items-center"><i class="fas fa-lightbulb fa-fw mr-2"></i> الخلاصة:</p>
+                <p>لا تعتمد على الامتداد <code class="ltr-code">.pem</code> فقط. افحص المحتوى إما يدويًا أو باستخدام أدوات مثل <code class="ltr-code">OpenSSL</code>.</p>
+            </div>
+        </section>
+
+        
+        <section id="naming-conventions" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-tags fa-fw text-lime-500"></i> التسميات الشائعة للملفات (أمثلة)
+            </h2>
+            <p class="mb-6 text-base sm:text-lg">لا توجد قاعدة صارمة، لكن هذه بعض الأمثلة الشائعة لتنظيم الملفات:</p>
+            <div class="table-wrapper bg-lime-50 border-lime-200">
+                <table class="min-w-full bg-white border-gray-300 rounded-lg shadow-sm text-sm sm:text-base">
+                     <thead class="bg-lime-100">
+                        <tr>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-lime-800 text-xs sm:text-sm uppercase tracking-wider">نوع الملف</th>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-lime-800 text-xs sm:text-sm uppercase tracking-wider">تسمية مقترحة</th>
+                            <th class="px-4 py-2 sm:px-6 sm:py-3 border-b font-semibold text-lime-800 text-xs sm:text-sm uppercase tracking-wider">الامتداد الشائع</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4">المفتاح الخاص</td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">my-domain.key</code> أو <code class="ltr-code">private-key.pem</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.key</code>, <code class="ltr-code">.pem</code></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4">المفتاح العام</td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">my-domain.pub</code> أو <code class="ltr-code">public-key.pem</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.pub</code>, <code class="ltr-code">.pem</code></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4">الشهادة</td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">my-domain.crt</code> أو <code class="ltr-code">certificate.pem</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.crt</code>, <code class="ltr-code">.pem</code>, <code class="ltr-code">.cer</code></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4">سلسلة الشهادات (Chain)</td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">chain.pem</code> أو <code class="ltr-code">intermediate.crt</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.pem</code>, <code class="ltr-code">.crt</code></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4">الشهادة الكاملة (مع السلسلة)</td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">fullchain.pem</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.pem</code></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4">طلب توقيع الشهادة</td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">my-domain.csr</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.csr</code></td></tr>
+                        <tr><td class="px-4 py-3 sm:px-6 sm:py-4">حزمة (مفتاح+شهادة)</td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">my-domain.pfx</code> أو <code class="ltr-code">identity.p12</code></td><td class="px-4 py-3 sm:px-6 sm:py-4"><code class="ltr-code">.pfx</code>, <code class="ltr-code">.p12</code></td></tr>
+                    </tbody>
+                </table>
+             </div>
+        </section>
+
+        
+        <section id="csr-explained" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-file-signature fa-fw text-emerald-500"></i> شرح طلب توقيع الشهادة (<code class="ltr-code">CSR</code>)
+            </h2>
+            <p class="mb-4 text-base sm:text-lg">ملف <code class="ltr-code">.csr</code> هو الخطوة الأولى لطلب شهادة من جهة موثوقة (CA).</p>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-3"><i class="fas fa-bullseye fa-fw mr-2"></i> الهدف منه</h3>
+            <p class="mb-4 text-sm sm:text-base">تقديم <strong class="text-indigo-700">معلوماتك + مفتاحك العام</strong> للـ CA لتوقيعها وإصدار شهادة رسمية.</p>
+            <p class="mb-6 text-sm sm:text-base text-gray-600 italic">هو بمثابة "طلب هوية رقمية" رسمي موجه للـ CA.</p>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-3"><i class="fas fa-list-alt fa-fw mr-2"></i> محتوياته</h3>
+            <div class="p-3 sm:p-4 border rounded-lg bg-gray-50 mb-6 text-sm sm:text-base">
+                <ol class="list-decimal pr-5 space-y-3 text-gray-700">
+                    <li>
+                        <strong><i class="fas fa-user-tag mr-1"></i> بيانات الهوية (Subject):</strong>
+                        <ul class="list-disc pr-5 text-xs sm:text-sm text-gray-600 mt-1">
+                            <li><code class="ltr-code">CN</code> (Common Name): اسم النطاق (e.g., <code class="ltr-code">www.example.com</code>) أو اسمك.</li>
+                            <li><code class="ltr-code">O</code> (Organization): اسم المؤسسة.</li>
+                            <li><code class="ltr-code">L</code> (Locality): المدينة.</li>
+                            <li><code class="ltr-code">ST</code> (State): الولاية/المحافظة.</li>
+                            <li><code class="ltr-code">C</code> (Country): رمز الدولة (حرفان).</li>
+                            <li><code class="ltr-code">emailAddress</code>: البريد الإلكتروني.</li>
+                        </ul>
+                    </li>
+                    <li><strong><i class="fas fa-unlock-alt mr-1 text-green-600"></i> المفتاح العام (Public Key):</strong> الذي قمت بتوليده مسبقًا.</li>
+                    <li><strong><i class="fas fa-signature mr-1 text-blue-600"></i> توقيع الطلب:</strong> يتم توقيع الطلب نفسه باستخدام <strong class="text-red-700">المفتاح الخاص</strong> المقابل للمفتاح العام الموجود في الطلب، لإثبات أنك تملك المفتاح الخاص.</li>
+                </ol>
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-3"><i class="fas fa-terminal fa-fw mr-2"></i> كيفية إنشائه (<code class="ltr-code">OpenSSL</code>)</h3>
+            <pre class="mb-4 text-xs sm:text-sm"><code class="language-bash"># 1. تأكد أن لديك مفتاح خاص (mykey.pem)
+# openssl genrsa -out mykey.pem 2048
+
+# 2. أنشئ الـ CSR باستخدام المفتاح الخاص
+openssl req -new -key mykey.pem -out mydomain.csr</code></pre>
+            <p class="mb-4 text-sm sm:text-base text-gray-700">سيطلب منك إدخال بيانات الهوية (<code class="ltr-code">CN</code>, <code class="ltr-code">O</code>, <code class="ltr-code">L</code>, <code class="ltr-code">ST</code>, <code class="ltr-code">C</code>...).</p>
+            <p class="text-gray-700 font-semibold text-sm sm:text-base">الناتج:</p>
+             <ul class="list-none space-y-1 text-sm sm:text-base text-gray-600">
+                <li class="flex items-center"><i class="fas fa-file-export fa-fw w-5 text-orange-500 mr-2"></i> <code class="ltr-code">mydomain.csr</code>: ملف الطلب الذي ترسله للـ CA.</li>
+                <li class="flex items-center"><i class="fas fa-key fa-fw w-5 text-red-600 mr-2"></i> (يبقى <code class="ltr-code">mykey.pem</code> سريًا لديك).</li>
+            </ul>
+
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mt-8 mb-3"><i class="fas fa-arrow-right fa-fw mr-2"></i> الخطوة التالية</h3>
+            <p class="text-sm sm:text-base text-gray-700">ترسل ملف <code class="ltr-code">.csr</code> للـ CA، وتتبع إجراءات التحقق الخاصة بهم للحصول على الشهادة الموقعة.</p>
+        </section>
+
+        
+        <section id="ca-trust" class="mb-10 md:mb-12 p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-lock fa-fw text-green-500"></i> أهمية ثقة الجهة المصدّرة (CA) - مثال <code class="ltr-code">Let's Encrypt</code>
+            </h2>
+            <p class="mb-4 text-base sm:text-lg">لماذا لا يثق المتصفح بشهادتك الذاتية مباشرة؟ لأنه لا يوجد طرف ثالث موثوق يؤكد هويتك.</p>
+            <div class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 p-3 sm:p-4 rounded-r-lg mb-6 text-sm sm:text-base" role="alert">
+                <p class="font-bold flex items-center"><i class="fas fa-user-secret fa-fw mr-2"></i> المشكلة:</p>
+                <p>أي شخص يمكنه إنشاء شهادة ذاتية ويدعي أنه <code class="ltr-code">google.com</code>! المتصفح يحتاج لطريقة للتحقق من هذا الادعاء.</p>
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-3"><i class="fas fa-user-shield fa-fw mr-2"></i> دور الـ CA (مثل <code class="ltr-code">Let’s Encrypt</code>)</h3>
+            <p class="mb-4 text-sm sm:text-base">الـ CA تعمل كـ "كاتب عدل رقمي". قبل أن توقع شهادتك، تطلب منك إثبات ملكيتك للنطاق (Domain Validation).</p>
+            <h4 class="font-medium text-gray-800 mb-2 text-sm sm:text-base">أشهر طرق التحقق:</h4>
+            <div class="flex flex-col md:flex-row gap-4 mb-6">
+                <div class="flex-1 p-3 sm:p-4 border rounded-lg bg-blue-50">
+                    <strong class="text-blue-700 flex items-center text-sm sm:text-base"><i class="fas fa-network-wired fa-fw mr-2"></i> <span class="ltr-code">DNS Challenge</span>:</strong>
+                    <p class="text-xs sm:text-sm text-gray-600 mt-1">تضيف سجل <code class="ltr-code">TXT</code> خاص في إعدادات <code class="ltr-code">DNS</code> لنطاقك.</p>
+                </div>
+                <div class="flex-1 p-3 sm:p-4 border rounded-lg bg-green-50">
+                     <strong class="text-green-700 flex items-center text-sm sm:text-base"><i class="fas fa-server fa-fw mr-2"></i> <span class="ltr-code">HTTP Challenge</span>:</strong>
+                     <p class="text-xs sm:text-sm text-gray-600 mt-1">تضع ملفًا خاصًا على خادم الويب الخاص بك في مسار معين.</p>
+                </div>
+            </div>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-3"><i class="fas fa-award fa-fw mr-2 text-yellow-500"></i> بعد التحقق الناجح</h3>
+            <ul class="list-disc pr-5 space-y-1 text-sm sm:text-base text-gray-700 mb-6">
+                <li>الـ CA تصدر لك شهادة رقمية موثوقة.</li>
+                <li>هذه الشهادة موقعة بمفتاح الـ CA الخاص.</li>
+            </ul>
+
+             <h4 class="font-medium text-gray-800 mb-2 text-sm sm:text-base">عندما يزور المتصفح موقعك:</h4>
+             <ul class="list-disc pr-5 space-y-1 text-sm sm:text-base text-gray-700 mb-6">
+                <li>يستلم الشهادة من خادمك.</li>
+                <li>يتحقق من توقيع الـ CA باستخدام المفتاح العام للـ CA (المدمج في المتصفح/النظام).</li>
+                <li>يتأكد أن اسم النطاق في الشهادة يطابق الموقع الذي يزوره.</li>
+                <li>إذا كل شيء صحيح <i class="fas fa-check-circle text-green-500 ml-1"></i>، يعرض علامة الأمان (القفل) ويبدأ اتصال <code class="ltr-code">HTTPS</code>.</li>
+            </ul>
+
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-800 p-3 sm:p-4 rounded-r-lg text-sm sm:text-base" role="alert">
+                <p class="font-bold flex items-center"><i class="fas fa-times-circle fa-fw mr-2"></i> بدون شهادة موثوقة:</p>
+                <p>سيظهر للمستخدم تحذير أمني كبير بأن الاتصال غير موثوق، مما يبعد الزوار.</p>
+            </div>
+        </section>
+
+         
+        <section id="https-encryption" class="p-4 sm:p-6 md:p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+            <h2 class="text-2xl sm:text-3xl font-bold text-indigo-600 mb-4 md:mb-6 border-b-2 border-indigo-100 pb-3">
+                <i class="fas fa-user-secret fa-fw text-violet-500"></i> كيف يتم تشفير البيانات فعليًا في <code class="ltr-code">HTTPS</code>؟ (تبسيط)
+            </h2>
+            <p class="mb-4 text-base sm:text-lg">فهمنا أن الشهادة تثبت هوية الخادم. لكن كيف يتم تشفير البيانات ذهابًا وإيابًا؟</p>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-3"><i class="fas fa-stopwatch fa-fw mr-2 text-gray-500"></i> ليس بالمفتاح العام/الخاص مباشرة!</h3>
+            <p class="mb-6 text-sm sm:text-base text-gray-700">التشفير غير المتماثل (عام/خاص) بطيء نسبيًا. لذا يُستخدم فقط في البداية لتبادل مفتاح آخر أسرع.</p>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-3"><i class="fas fa-handshake fa-fw mr-2 text-blue-500"></i> مرحلة المصافحة (<span class="ltr-code">TLS Handshake</span>) - الهدف: مفتاح سري مشترك</h3>
+            <p class="mb-4 text-sm sm:text-base">خطوات مبسطة جدًا:</p>
+            <ol class="list-decimal pr-5 space-y-3 text-sm sm:text-base text-gray-700 mb-6 border p-3 sm:p-4 rounded-lg bg-gray-50">
+                <li><strong class="text-blue-700">المتصفح <i class="fas fa-arrow-left mx-1"></i> الخادم:</strong> "أريد الاتصال بأمان، هذه خوارزمياتي المدعومة".</li>
+                <li><strong class="text-green-700">الخادم <i class="fas fa-arrow-left mx-1"></i> المتصفح:</strong> "حسنًا، هذه شهادتي (تحتوي مفتاحي العام)، واخترت هذه الخوارزمية".</li>
+                <li><strong class="text-blue-700">المتصفح:</strong> يتحقق من الشهادة (هل هي موثوقة؟ هل تطابق النطاق؟ هل هي صالحة؟).</li>
+                <li>
+                    <strong class="text-purple-700">(هنا السحر <i class="fas fa-magic ml-1"></i>) - إنشاء مفتاح الجلسة:</strong>
+                    <ul class="list-disc pr-5 text-xs sm:text-sm text-gray-600 mt-1">
+                        <li>إما المتصفح يولد سرًا، يشفره بمفتاح الخادم العام ويرسله (<span class="ltr-code">RSA Key Exchange</span> - قديم).</li>
+                        <li>أو (الأحدث والأفضل) كلاهما يتبادل أجزاء رياضية ويولدان نفس المفتاح السري <strong class="text-green-700">بشكل مستقل</strong> دون إرساله مباشرة (<span class="ltr-code">Diffie-Hellman/ECDHE</span>).</li>
+                    </ul>
+                </li>
+                 <li><strong class="text-gray-700">كلا الطرفين الآن لديهما نفس المفتاح السري المؤقت (<span class="ltr-code">Session Key</span>).</strong></li>
+            </ol>
+
+            <h3 class="text-xl sm:text-2xl font-semibold text-indigo-700 mb-3"><i class="fas fa-lock-open fa-fw mr-2 text-yellow-600"></i> مرحلة التشفير الفعلي (<span class="ltr-code">Symmetric Encryption</span>)</h3>
+            <ul class="list-disc pr-5 space-y-2 text-sm sm:text-base text-gray-700 mb-4">
+                <li>يتم استخدام <strong class="text-indigo-700">مفتاح الجلسة (<span class="ltr-code">Session Key</span>)</strong> لتشفير وفك تشفير <strong class="text-red-700">كل</strong> البيانات المتبادلة بعد المصافحة.</li>
+                <li>هذا يسمى <strong class="text-indigo-700">تشفير متماثل (<span class="ltr-code">Symmetric Encryption</span>)</strong> وهو سريع جدًا (مثل <code class="ltr-code">AES</code>).</li>
+                <li>الخادم يشفر بمفتاح الجلسة، والمتصفح يفك التشفير بنفس المفتاح، والعكس صحيح.</li>
+            </ul>
+
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-800 p-3 sm:p-4 rounded-r-lg text-sm sm:text-base" role="alert">
+                <p class="font-bold flex items-center"><i class="fas fa-lightbulb fa-fw mr-2"></i> الإجابة المختصرة:</p>
+                <p>الخادم والمتصفح يتفقان على مفتاح سري مؤقت (<span class="ltr-code">Session Key</span>) خلال الـ <span class="ltr-code">TLS Handshake</span>، ثم يستخدمان هذا المفتاح السريع لتشفير وفك تشفير كل البيانات اللاحقة.</p>
+            </div>
+        </section>
+
+        <footer class="text-center mt-12 md:mt-16 pt-8 border-t border-gray-300">
+            <p class="text-gray-500 text-xs sm:text-sm">&copy; 2025 - تم إنشاؤه بواسطة <a href="https://github.com/devehab" class="text-blue-500 hover:underline">Devehab</a></p>
+        </footer>
+
+    </div>
+
+</body>
+</html>
