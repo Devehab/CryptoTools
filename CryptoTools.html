@@ -331,43 +331,132 @@
                     <strong>3. تشفير البيانات الحساسة:</strong>
                     <br>• <span class="text-amber-600 dark:text-amber-400 font-bold">ملاحظة مهمة:</span> ترميز Base64 ليس تشفيرًا آمنًا! فهو يمكن فك ترميزه بسهولة.
                     <br>• يستخدم فقط لإخفاء البيانات عن المشاهدة العرضية وليس للحماية الحقيقية.
-                    <br><br>
-                    <strong>كيفية استخدام هذه الأداة:</strong>
-                    <br>1. أدخل النص المراد ترميزه أو فك ترميزه في مربع النص.
-                    <br>2. انقر على زر "ترميز Base64" لتحويل النص العادي إلى ترميز Base64.
-                    <br>3. انقر على زر "فك ترميز Base64" لتحويل ترميز Base64 إلى النص الأصلي.
-                    <br>4. استخدم زر النسخ لنسخ النتيجة بسهولة.
-                    <br><br>
-                    <strong>مثال:</strong> النص "مرحبا" عند ترميزه بـ Base64 يصبح "2YXYsdit2KjYpw=="
                 </p>
                 
-                <div class="mb-6">
-                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المدخل:</label>
-                    <textarea id="base64-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المراد ترميزه أو فك ترميزه..."></textarea>
-                    <p class="mt-1 input-tip dark:text-gray-400">أدخل نصًا عاديًا للترميز أو نصًا مرمزًا بـ Base64 لفك الترميز.</p>
+                <!-- تبويب للتنقل بين القسمين -->
+                <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
+                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
+                        <li class="ml-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 rounded-t-lg border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 active" id="encode-tab" data-tabs-target="#encode-content" type="button" role="tab" aria-controls="encode-content" aria-selected="true">
+                                <i class="fas fa-file-export ml-2"></i>تحويل نص/ملف إلى Base64
+                            </button>
+                        </li>
+                        <li class="ml-2" role="presentation">
+                            <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="decode-tab" data-tabs-target="#decode-content" type="button" role="tab" aria-controls="decode-content" aria-selected="false">
+                                <i class="fas fa-file-import ml-2"></i>تحويل Base64 إلى نص/ملف
+                            </button>
+                        </li>
+                    </ul>
                 </div>
                 
-                <div class="mb-6 flex flex-wrap gap-2">
-                    <button id="encode-base64" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
-                        <i class="fas fa-lock mr-2"></i>
-                        ترميز Base64
-                    </button>
-                    <button id="decode-base64" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition duration-300">
-                        <i class="fas fa-unlock mr-2"></i>
-                        فك ترميز Base64
-                    </button>
-                    <p class="w-full mt-2 input-tip dark:text-gray-400">اختر "ترميز" لتحويل النص العادي إلى Base64، أو "فك ترميز" لتحويل Base64 إلى نص عادي.</p>
-                </div>
-                
-                <div class="mb-6">
-                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النتيجة:</label>
-                    <div class="relative">
-                        <textarea id="base64-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="4" readonly></textarea>
-                        <button data-copy="base64-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
-                            <i class="fas fa-copy"></i>
+                <!-- محتوى تحويل نص/ملف إلى Base64 -->
+                <div id="encode-content" role="tabpanel" aria-labelledby="encode-tab">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المراد تحويله إلى Base64:</label>
+                        <textarea id="text-to-base64" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المراد تحويله إلى Base64..."></textarea>
+                        <p class="mt-1 input-tip dark:text-gray-400">أدخل النص العادي الذي تريد تحويله إلى ترميز Base64.</p>
+                    </div>
+
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">أو قم بتحميل ملف:</label>
+                        <div class="flex items-center justify-center w-full">
+                            <label for="file-to-base64" class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <i class="fas fa-upload mb-3 text-gray-400 text-xl"></i>
+                                    <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">اضغط للتحميل</span> أو اسحب وأفلت</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400">يدعم الصور وأنواع الملفات الأخرى</p>
+                                </div>
+                                <input id="file-to-base64" type="file" class="hidden" />
+                            </label>
+                        </div>
+                        <p id="file-to-base64-name" class="mt-2 text-sm text-gray-500 dark:text-gray-400"></p>
+                        <div id="file-to-base64-actions" class="mt-2 hidden">
+                            <button id="remove-file-to-base64" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm">
+                                <i class="fas fa-times-circle mr-1"></i>إزالة الملف
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <button id="convert-to-base64" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                            <i class="fas fa-lock mr-2"></i>
+                            تحويل إلى Base64
                         </button>
                     </div>
-                    <p class="mt-1 input-tip dark:text-gray-400">النتيجة ستظهر هنا بعد الترميز أو فك الترميز. استخدم زر النسخ لنسخ النتيجة.</p>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">نتيجة ترميز Base64:</label>
+                        <div class="relative">
+                            <textarea id="base64-result" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="4" readonly></textarea>
+                            <button data-copy="base64-result" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">نتيجة التحويل إلى Base64. استخدم زر النسخ لنسخ النتيجة.</p>
+                    </div>
+                </div>
+                
+                <!-- محتوى تحويل Base64 إلى نص/ملف -->
+                <div id="decode-content" class="hidden" role="tabpanel" aria-labelledby="decode-tab">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">نص Base64 المراد فك ترميزه:</label>
+                        <textarea id="base64-to-decode" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل نص Base64 المراد فك ترميزه..."></textarea>
+                        <p class="mt-1 input-tip dark:text-gray-400">أدخل نص Base64 الذي تريد تحويله إلى نص عادي أو ملف.</p>
+                        <div class="mt-2 text-xs text-amber-600 dark:text-amber-400">
+                            <p><i class="fas fa-info-circle ml-1"></i><strong>الصيغ التي يمكن معاينتها:</strong> صور (JPG, PNG, GIF, SVG, WebP)، ملفات PDF، وغيرها. الصيغ الأخرى ستظهر معلوماتها فقط مع إمكانية التنزيل.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <button id="convert-from-base64" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                            <i class="fas fa-unlock mr-2"></i>
+                            فك ترميز Base64
+                        </button>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">نتيجة فك الترميز (نص):</label>
+                        <div class="relative">
+                            <textarea id="text-result" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200" rows="4" readonly></textarea>
+                            <button data-copy="text-result" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">نتيجة فك الترميز إذا كان المحتوى نصًا. استخدم زر النسخ لنسخ النتيجة.</p>
+                    </div>
+                    
+                    <div id="file-preview-container" class="mb-6 hidden">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">معاينة الملف:</label>
+                        <div class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                            <!-- معاينة الصور -->
+                            <div id="image-preview-container" class="flex items-center justify-center hidden">
+                                <img id="image-preview" class="max-w-full max-h-64" alt="معاينة الصورة" />
+                            </div>
+                            
+                            <!-- معاينة ملفات PDF -->
+                            <div id="pdf-preview-container" class="flex flex-col items-center justify-center hidden">
+                                <div class="mb-3">
+                                    <i class="fas fa-file-pdf text-red-600 text-4xl"></i>
+                                </div>
+                                <p id="pdf-preview-name" class="text-gray-700 dark:text-gray-300 font-medium"></p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">انقر على زر التنزيل أدناه لفتح ملف PDF</p>
+                            </div>
+                            
+                            <!-- معلومات الملفات الأخرى -->
+                            <div id="file-info" class="text-center hidden">
+                                <i class="fas fa-file text-4xl text-blue-500 mb-2"></i>
+                                <p id="file-info-name" class="text-gray-700 dark:text-gray-300"></p>
+                                <p id="file-info-size" class="text-sm text-gray-500 dark:text-gray-400"></p>
+                                <p id="file-info-type" class="text-sm text-gray-500 dark:text-gray-400 mt-1"></p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex justify-center">
+                            <button id="download-file" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                                <i class="fas fa-download mr-2"></i>
+                                تنزيل الملف
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -393,60 +482,183 @@
                     <br>• فقدان المفتاح يعني فقدان القدرة على فك تشفير البيانات نهائياً.
                     <br>• قوة المفتاح تحدد مدى صعوبة كسر التشفير (يفضل استخدام مفاتيح طويلة ومعقدة).
                     <br><br>
-                    <strong>كيفية استخدام هذه الأداة:</strong>
-                    <br>1. أدخل النص المراد تشفيره أو فك تشفيره في مربع النص.
-                    <br>2. أدخل المفتاح السري الذي سيستخدم للتشفير أو فك التشفير (يجب أن يكون نفس المفتاح للعمليتين).
-                    <br>3. انقر على زر "توليد مفتاح عشوائي" لإنشاء مفتاح قوي بشكل عشوائي.
-                    <br>4. انقر على زر "تشفير" لتشفير النص أو "فك التشفير" لاستعادة النص الأصلي.
-                    <br>5. استخدم زر النسخ لنسخ النتيجة والمفتاح بسهولة.
-                    <br><br>
                     <strong>ملاحظة مهمة:</strong> عند مشاركة نص مشفر مع شخص آخر، يجب مشاركة المفتاح معه عبر قناة اتصال آمنة مختلفة.
                 </p>
                 
-                <div class="mb-6">
-                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المدخل:</label>
-                    <textarea id="aes-input" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المراد تشفيره أو فك تشفيره..."></textarea>
-                    <p class="mt-1 input-tip dark:text-gray-400">أدخل النص العادي للتشفير أو النص المشفر لفك التشفير.</p>
+                <!-- تبويبات التشفير وفك التشفير -->
+                <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
+                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
+                        <li class="ml-2" role="presentation">
+                            <button id="encrypt-tab" class="inline-block p-4 border-b-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 active" type="button" role="tab" aria-controls="encrypt-content" aria-selected="true">
+                                <i class="fas fa-lock ml-1"></i>تشفير نص/ملف
+                            </button>
+                        </li>
+                        <li class="ml-2" role="presentation">
+                            <button id="decrypt-tab" class="inline-block p-4 border-b-2 border-transparent hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300 rounded-t-lg" type="button" role="tab" aria-controls="decrypt-content" aria-selected="false">
+                                <i class="fas fa-unlock ml-1"></i>فك تشفير نص/ملف
+                            </button>
+                        </li>
+                    </ul>
                 </div>
                 
-                <div class="mb-6">
-                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح السري:</label>
-                    <div class="flex items-center gap-2">
-                        <div class="relative flex-grow">
-                            <input type="text" id="aes-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" placeholder="أدخل المفتاح السري أو قم بتوليد مفتاح عشوائي...">
-                            <button data-copy="aes-key" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                <!-- محتوى تشفير نص/ملف -->
+                <div id="encrypt-content" role="tabpanel" aria-labelledby="encrypt-tab">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المراد تشفيره:</label>
+                        <textarea id="text-to-encrypt" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المراد تشفيره..."></textarea>
+                        <p class="mt-1 input-tip dark:text-gray-400">أدخل النص العادي الذي تريد تشفيره باستخدام AES.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">أو قم بتحميل ملف:</label>
+                        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition duration-300">
+                            <label for="file-to-encrypt" class="cursor-pointer">
+                                <i class="fas fa-file-upload text-3xl text-gray-400 dark:text-gray-500 mb-2"></i>
+                                <p class="text-gray-500 dark:text-gray-400">اسحب وأفلت الملف هنا أو انقر للتحميل</p>
+                                <input type="file" id="file-to-encrypt" class="hidden">
+                            </label>
+                        </div>
+                        <p id="file-to-encrypt-name" class="mt-2 text-sm text-gray-500 dark:text-gray-400"></p>
+                        <div id="file-to-encrypt-actions" class="mt-2 hidden">
+                            <button id="remove-file-to-encrypt" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm">
+                                <i class="fas fa-times-circle mr-1"></i>إزالة الملف
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح السري:</label>
+                        <div class="flex items-center gap-2">
+                            <div class="relative flex-grow">
+                                <input type="text" id="encrypt-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" placeholder="أدخل المفتاح السري أو قم بتوليد مفتاح عشوائي...">
+                                <button data-copy="encrypt-key" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <button id="generate-encrypt-key" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                                <i class="fas fa-key mr-2"></i>
+                                توليد مفتاح
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">استخدم نفس المفتاح للتشفير وفك التشفير. احتفظ به في مكان آمن.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <button id="encrypt-aes-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                            <i class="fas fa-lock mr-2"></i>
+                            تشفير
+                        </button>
+                        <p class="mt-2 input-tip dark:text-gray-400">سيتم تشفير النص أو الملف باستخدام خوارزمية AES والمفتاح المحدد.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النتيجة المشفرة:</label>
+                        <div class="relative">
+                            <textarea id="encrypt-result" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="4" readonly></textarea>
+                            <button data-copy="encrypt-result" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
                                 <i class="fas fa-copy"></i>
                             </button>
                         </div>
-                        <button id="generate-aes-key" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition duration-300">
-                            <i class="fas fa-key mr-2"></i>
-                            توليد مفتاح عشوائي
-                        </button>
+                        <p class="mt-1 input-tip dark:text-gray-400">النص المشفر سيظهر هنا بتنسيق Base64. يمكنك نسخه ومشاركته مع الآخرين.</p>
                     </div>
-                    <p class="mt-1 input-tip dark:text-gray-400">استخدم نفس المفتاح للتشفير وفك التشفير. احتفظ به في مكان آمن.</p>
+                    
+                    <div id="encrypted-file-container" class="mb-6 hidden">
+                        <button id="download-encrypted-file" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                            <i class="fas fa-download mr-2"></i>
+                            تنزيل الملف المشفر
+                        </button>
+                        <p class="mt-2 input-tip dark:text-gray-400">انقر لتنزيل الملف المشفر. ستحتاج إلى نفس المفتاح لفك تشفيره لاحقًا.</p>
+                    </div>
                 </div>
                 
-                <div class="mb-6 flex flex-wrap gap-2">
-                    <button id="encrypt-aes" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
-                        <i class="fas fa-lock mr-2"></i>
-                        تشفير
-                    </button>
-                    <button id="decrypt-aes" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition duration-300">
-                        <i class="fas fa-unlock mr-2"></i>
-                        فك التشفير
-                    </button>
-                    <p class="w-full mt-2 input-tip dark:text-gray-400">تأكد من استخدام نفس المفتاح للتشفير وفك التشفير.</p>
-                </div>
-                
-                <div class="mb-6">
-                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النتيجة:</label>
-                    <div class="relative">
-                        <textarea id="aes-output" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 font-mono" rows="4" readonly></textarea>
-                        <button data-copy="aes-output" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
-                            <i class="fas fa-copy"></i>
-                        </button>
+                <!-- محتوى فك تشفير نص/ملف -->
+                <div id="decrypt-content" class="hidden" role="tabpanel" aria-labelledby="decrypt-tab">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المشفر:</label>
+                        <textarea id="text-to-decrypt" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص المشفر لفك تشفيره..."></textarea>
+                        <p class="mt-1 input-tip dark:text-gray-400">أدخل النص المشفر بتنسيق Base64 الذي تريد فك تشفيره.</p>
                     </div>
-                    <p class="mt-1 input-tip dark:text-gray-400">النتيجة ستظهر هنا بعد التشفير أو فك التشفير. لاحظ أن النص المشفر سيظهر بتنسيق Base64.</p>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">أو قم بتحميل ملف مشفر:</label>
+                        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition duration-300">
+                            <label for="file-to-decrypt" class="cursor-pointer">
+                                <i class="fas fa-file-upload text-3xl text-gray-400 dark:text-gray-500 mb-2"></i>
+                                <p class="text-gray-500 dark:text-gray-400">اسحب وأفلت الملف المشفر هنا أو انقر للتحميل</p>
+                                <input type="file" id="file-to-decrypt" class="hidden">
+                            </label>
+                        </div>
+                        <p id="file-to-decrypt-name" class="mt-2 text-sm text-gray-500 dark:text-gray-400"></p>
+                        <div id="file-to-decrypt-actions" class="mt-2 hidden">
+                            <button id="remove-file-to-decrypt" class="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-sm">
+                                <i class="fas fa-times-circle mr-1"></i>إزالة الملف
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح السري:</label>
+                        <div class="relative">
+                            <input type="text" id="decrypt-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" placeholder="أدخل المفتاح السري المستخدم للتشفير...">
+                            <button data-copy="decrypt-key" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">يجب أن يكون هذا هو نفس المفتاح الذي استخدمته للتشفير.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <button id="decrypt-aes-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                            <i class="fas fa-unlock mr-2"></i>
+                            فك التشفير
+                        </button>
+                        <p class="mt-2 input-tip dark:text-gray-400">سيتم فك تشفير النص أو الملف باستخدام المفتاح المحدد.</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النتيجة بعد فك التشفير:</label>
+                        <div class="relative">
+                            <textarea id="decrypt-result" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200" rows="4" readonly></textarea>
+                            <button data-copy="decrypt-result" class="copy-btn absolute top-3 left-3 px-2 py-1 bg-gray-200 dark:bg-gray-600 rounded hover:bg-gray-300 dark:hover:bg-gray-500 transition duration-300">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="mt-1 input-tip dark:text-gray-400">النص الأصلي بعد فك التشفير سيظهر هنا.</p>
+                    </div>
+                    
+                    <!-- معاينة الملف بعد فك التشفير -->
+                    <div id="decrypted-file-preview-container" class="mb-6 hidden">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">معاينة الملف:</label>
+                        <div class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                            <!-- معاينة الصور -->
+                            <div id="decrypted-image-preview-container" class="flex items-center justify-center hidden">
+                                <img id="decrypted-image-preview" class="max-w-full max-h-64" alt="معاينة الصورة" />
+                            </div>
+                            
+                            <!-- معاينة ملفات PDF -->
+                            <div id="decrypted-pdf-preview-container" class="flex flex-col items-center justify-center hidden">
+                                <div class="mb-3">
+                                    <i class="fas fa-file-pdf text-red-600 text-4xl"></i>
+                                </div>
+                                <p id="decrypted-pdf-preview-name" class="text-gray-700 dark:text-gray-300 font-medium"></p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">انقر على زر التنزيل أدناه لفتح ملف PDF</p>
+                            </div>
+                            
+                            <!-- معلومات الملفات الأخرى -->
+                            <div id="decrypted-file-info" class="text-center hidden">
+                                <i class="fas fa-file text-4xl text-blue-500 mb-2"></i>
+                                <p id="decrypted-file-info-name" class="text-gray-700 dark:text-gray-300"></p>
+                                <p id="decrypted-file-info-size" class="text-sm text-gray-500 dark:text-gray-400"></p>
+                                <p id="decrypted-file-info-type" class="text-sm text-gray-500 dark:text-gray-400 mt-1"></p>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex justify-center">
+                            <button id="download-decrypted-file" class="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg transition duration-300">
+                                <i class="fas fa-download mr-2"></i>
+                                تنزيل الملف الأصلي
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
             
@@ -582,9 +794,9 @@
                     <br>• <strong>RIPEMD-160:</strong> خوارزمية بديلة تنتج قيمة بطول 160 بت (40 حرفًا سداسي عشري). تستخدم في بروتوكول البيتكوين.
                     <br><br>
                     <strong>3. استخدامات قيم التجزئة:</strong>
-                    <br>• <strong>التحقق من سلامة البيانات:</strong> للتأكد من عدم تغيير الملفات أثناء النقل.
+                    <br>• <strong>التحقق من سلامة البيانات:</strong> للتأكد من عدم تغيير الملفات أثناء التنزيل أو النقل.
                     <br>• <strong>تخزين كلمات المرور:</strong> لا تخزن كلمات المرور بشكل مباشر، بل تخزن قيم التجزئة الخاصة بها.
-                    <br>• <strong>التوقيعات الرقمية:</strong> كجزء من عملية التوقيع الرقمي والتحقق منه.
+                    <br>• <strong>التوقيعات الرقمية:</strong> كجزء من عملية إنشاء والتحقق من التوقيعات الرقمية.
                     <br>• <strong>تقنية البلوكتشين:</strong> لربط الكتل (blocks) وتأمين المعاملات.
                     <br><br>
                     <strong>كيفية استخدام هذه الأداة:</strong>
@@ -768,19 +980,94 @@
                     <br>• <strong>تحديثات البرامج:</strong> التأكد من أن تحديثات البرامج صادرة من مصدرها الأصلي.
                     <br>• <strong>المعاملات المالية:</strong> تأمين المعاملات في العملات المشفرة والخدمات المصرفية الإلكترونية.
                     <br><br>
+                    <strong>🧩 ما الفرق بين الملفات التالية؟</strong>
+                    <div class="overflow-x-auto mt-2 mb-4">
+                        <table class="min-w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700">
+                            <thead>
+                                <tr class="bg-gray-100 dark:bg-gray-700">
+                                    <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 text-right">الملف</th>
+                                    <th class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 text-right">الوصف</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 font-mono">document.pdf</td>
+                                    <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">الملف الأصلي الذي تريد توقيعه (مثل عقد أو تقرير)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 font-mono">document.pdf.sig</td>
+                                    <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">توقيع رقمي <strong>منفصل</strong> (ملف صغير يحتوي فقط على التوقيع، وليس المحتوى نفسه)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600 font-mono">document.pdf.asc</td>
+                                    <td class="py-2 px-4 border-b border-gray-300 dark:border-gray-600">توقيع منفصل لكن بصيغة <strong>نصية (ASCII armored)</strong> لسهولة الإرسال عبر البريد</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="mt-2 mb-4 text-gray-700 dark:text-gray-300">
+                        <strong>✅ يعني:</strong> بدلاً من إدخال التوقيع داخل الملف نفسه، يتم إنشاء ملف توقيع منفصل يُرسل مع الملف الأصلي.
+                    </p>
+                    <br>
                     <strong>كيفية استخدام هذه الأداة:</strong>
-                    <br>1. أدخل النص الذي تريد توقيعه في مربع النص.
+                    <br>1. أدخل النص الذي تريد توقيعه في مربع النص أو قم بتحميل ملف.
                     <br>2. أدخل المفتاح الخاص RSA الخاص بك (يمكنك إنشاء مفتاح باستخدام أداة "مولد مفاتيح RSA").
-                    <br>3. انقر على زر "إنشاء التوقيع الرقمي" لتوقيع النص.
-                    <br>4. استخدم التوقيع الناتج مع النص الأصلي والمفتاح العام للتحقق من صحة التوقيع.
-                    <br><br>
-                    <strong>ملاحظة تعليمية:</strong> التوقيع الرقمي يستخدم خوارزمية SHA-256 لحساب قيمة التجزئة للنص قبل تشفيرها بالمفتاح الخاص.
+                    <br>3. انقر على زر "إنشاء التوقيع الرقمي" لتوقيع النص أو الملف.
+                    <br>4. استخدم التوقيع الناتج مع النص الأصلي أو الملف والمفتاح العام للتحقق من صحة التوقيع.
+                    <br>5. يمكنك تنزيل ملف التوقيع بصيغة .sig أو .asc.
                 </p>
                 
-                <div class="mb-6">
-                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المراد توقيعه:</label>
-                    <textarea id="text-to-sign" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص الذي تريد توقيعه..."></textarea>
-                    <p class="mt-1 input-tip dark:text-gray-400">أدخل النص الأصلي الذي تريد إنشاء توقيع رقمي له.</p>
+                <!-- تبويبات التنقل -->
+                <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
+                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
+                        <li class="ml-2" role="presentation">
+                            <button id="sign-text-tab" class="inline-block p-4 border-b-2 rounded-t-lg active" role="tab" aria-selected="true">
+                                <i class="fas fa-font ml-1"></i>
+                                توقيع نص
+                            </button>
+                        </li>
+                        <li class="ml-2" role="presentation">
+                            <button id="sign-file-tab" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" role="tab" aria-selected="false">
+                                <i class="fas fa-file ml-1"></i>
+                                توقيع ملف
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- محتوى توقيع النص -->
+                <div id="sign-text-content" role="tabpanel" aria-labelledby="sign-text-tab">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص المراد توقيعه:</label>
+                        <textarea id="text-to-sign" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص الذي تريد توقيعه..."></textarea>
+                        <p class="mt-1 input-tip dark:text-gray-400">أدخل النص الأصلي الذي تريد إنشاء توقيع رقمي له.</p>
+                    </div>
+                </div>
+                
+                <!-- محتوى توقيع الملف -->
+                <div id="sign-file-content" class="hidden" role="tabpanel" aria-labelledby="sign-file-tab">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">الملف المراد توقيعه:</label>
+                        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition duration-300 cursor-pointer">
+                            <input type="file" id="file-to-sign" class="hidden">
+                            <label for="file-to-sign" class="cursor-pointer">
+                                <i class="fas fa-file-upload text-3xl mb-2 text-blue-500"></i>
+                                <p class="mb-1 text-gray-700 dark:text-gray-300">اسحب وأفلت الملف هنا أو انقر للاختيار</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">يمكنك تحميل أي نوع من الملفات</p>
+                            </label>
+                        </div>
+                        <div id="file-to-sign-info" class="mt-3 hidden">
+                            <div class="flex items-center justify-between bg-blue-50 dark:bg-blue-900 p-3 rounded-lg">
+                                <div>
+                                    <p id="file-to-sign-name" class="font-medium text-blue-700 dark:text-blue-300"></p>
+                                    <p id="file-to-sign-size" class="text-sm text-blue-600 dark:text-blue-400"></p>
+                                </div>
+                                <button id="remove-file-to-sign" class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
+                                    <i class="fas fa-times-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="mb-6">
@@ -791,10 +1078,10 @@
                 
                 <div class="mb-6">
                     <button id="sign-data-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
-                        <i class="fas fa-signature mr-2"></i>
+                        <i class="fas fa-signature ml-2"></i>
                         إنشاء التوقيع الرقمي
                     </button>
-                    <p class="mt-2 input-tip dark:text-gray-400">انقر لإنشاء توقيع رقمي للنص باستخدام المفتاح الخاص المدخل.</p>
+                    <p class="mt-2 input-tip dark:text-gray-400">انقر لإنشاء توقيع رقمي للنص أو الملف باستخدام المفتاح الخاص المدخل.</p>
                 </div>
                 
                 <div id="signature-result" class="mb-6 hidden">
@@ -805,7 +1092,18 @@
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
-                    <p class="mt-1 input-tip dark:text-gray-400">هذا هو التوقيع الرقمي للنص المدخل. يمكنك مشاركة هذا التوقيع مع النص الأصلي والمفتاح العام للتحقق من صحة التوقيع.</p>
+                    <p class="mt-1 input-tip dark:text-gray-400">هذا هو التوقيع الرقمي للنص أو الملف المدخل. يمكنك مشاركة هذا التوقيع مع النص الأصلي أو الملف والمفتاح العام للتحقق من صحة التوقيع.</p>
+                    
+                    <div class="mt-4 flex space-x-4 space-x-reverse">
+                        <button id="download-sig-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                            <i class="fas fa-download ml-2"></i>
+                            تنزيل كملف .sig
+                        </button>
+                        <button id="download-asc-btn" class="bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition duration-300">
+                            <i class="fas fa-download ml-2"></i>
+                            تنزيل كملف .asc
+                        </button>
+                    </div>
                 </div>
             </div>
             
@@ -813,54 +1111,114 @@
             <div id="content-verify-signature" class="tab-content">
                 <h2 class="text-2xl font-bold mb-4 text-center text-blue-600 dark:text-blue-400">التحقق من التوقيع الرقمي</h2>
                 <p class="mb-6 text-gray-700 dark:text-gray-300">
-                    التحقق من التوقيع الرقمي هو عملية التأكد من صحة التوقيع الرقمي وسلامة الرسالة المرتبطة به:
+                    التحقق من التوقيع الرقمي هو عملية التأكد من أن الرسالة أو المستند قد تم توقيعه بواسطة المرسل المدعى وأنه لم يتم تعديله:
                     <br><br>
-                    <strong>1. أهمية التحقق من التوقيع الرقمي:</strong>
-                    <br>• <strong>التحقق من الهوية:</strong> التأكد من أن الرسالة تم توقيعها فعلاً من قبل الشخص المزعوم (صاحب المفتاح الخاص).
-                    <br>• <strong>التحقق من السلامة:</strong> التأكد من أن الرسالة لم يتم تعديلها بعد توقيعها.
-                    <br>• <strong>عدم الإنكار:</strong> لا يمكن للموقّع إنكار أنه قام بالتوقيع، لأن المفتاح الخاص يفترض أنه بحوزته فقط.
+                    <strong>1. كيف يعمل التحقق من التوقيع؟</strong>
+                    <br>• يستخدم المفتاح العام للمرسل لفك تشفير التوقيع الرقمي.
+                    <br>• يتم حساب قيمة التجزئة (hash) للرسالة، ثم مقارنتها مع قيمة التجزئة المحسوبة من التوقيع.
+                    <br>• إذا تطابقت القيمتان، فهذا يعني أن التوقيع صحيح والرسالة لم يتم تعديلها.
                     <br><br>
-                    <strong>2. كيف تعمل عملية التحقق؟</strong>
-                    <br>• <strong>الخطوة 1:</strong> حساب قيمة تجزئة (hash) للرسالة الأصلية باستخدام نفس خوارزمية التجزئة المستخدمة في التوقيع (SHA-256).
-                    <br>• <strong>الخطوة 2:</strong> فك تشفير التوقيع الرقمي باستخدام المفتاح العام للمرسل، مما ينتج قيمة التجزئة الأصلية.
-                    <br>• <strong>الخطوة 3:</strong> مقارنة قيمة التجزئة المحسوبة مع قيمة التجزئة المستخرجة من التوقيع.
-                    <br>• <strong>الخطوة 4:</strong> إذا تطابقت القيمتان، فإن التوقيع صحيح والرسالة لم يتم تعديلها.
+                    <strong>2. ماذا يثبت التحقق الناجح؟</strong>
+                    <br>• <strong>الأصالة:</strong> أن الرسالة تم توقيعها فعلاً باستخدام المفتاح الخاص المقابل للمفتاح العام.
+                    <br>• <strong>السلامة:</strong> أن الرسالة لم يتم تعديلها بعد توقيعها.
+                    <br>• <strong>عدم الإنكار:</strong> لا يمكن للموقّع إنكار أنه قام بتوقيع الرسالة (طالما أن مفتاحه الخاص لم يتم اختراقه).
                     <br><br>
-                    <strong>3. متى يفشل التحقق من التوقيع؟</strong>
-                    <br>• إذا تم تعديل الرسالة الأصلية بعد توقيعها.
-                    <br>• إذا تم استخدام مفتاح عام خاطئ (ليس المفتاح العام المقابل للمفتاح الخاص المستخدم في التوقيع).
-                    <br>• إذا كان التوقيع الرقمي تالفًا أو تم تعديله.
+                    <strong>3. ملاحظات مهمة:</strong>
+                    <br>• يجب أن تكون متأكدًا من أن المفتاح العام ينتمي فعلاً للشخص الذي تدعي أنه المرسل.
+                    <br>• التوقيع الرقمي يتحقق فقط من أن الرسالة تم توقيعها بالمفتاح الخاص المقابل للمفتاح العام، وليس من هوية المرسل نفسه.
+                    <br>• يمكن التحقق من توقيع الملفات (.sig أو .asc) أو التوقيعات النصية المباشرة.
                     <br><br>
                     <strong>كيفية استخدام هذه الأداة:</strong>
-                    <br>1. أدخل النص الأصلي الذي تم توقيعه.
-                    <br>2. أدخل التوقيع الرقمي (بتنسيق Base64) الذي تريد التحقق منه.
-                    <br>3. أدخل المفتاح العام RSA للشخص الذي قام بالتوقيع.
+                    <br>1. أدخل النص الأصلي أو قم بتحميل الملف الأصلي.
+                    <br>2. أدخل التوقيع الرقمي أو قم بتحميل ملف التوقيع (.sig أو .asc).
+                    <br>3. أدخل المفتاح العام RSA للمرسل.
                     <br>4. انقر على زر "التحقق من التوقيع" للتأكد من صحة التوقيع.
-                    <br><br>
-                    <strong>ملاحظة تعليمية:</strong> نتيجة التحقق ستكون إما "التوقيع صحيح" (باللون الأخضر) أو "التوقيع غير صحيح" (باللون الأحمر).
                 </p>
                 
-                <div class="mb-6">
-                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص الأصلي:</label>
-                    <textarea id="verify-original-text" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص الأصلي الذي تم توقيعه..."></textarea>
-                    <p class="mt-1 input-tip dark:text-gray-400">أدخل النص الأصلي بالضبط كما كان عند إنشاء التوقيع. أي تغيير، حتى لو كان حرفًا واحدًا، سيؤدي إلى فشل التحقق.</p>
+                <!-- تبويبات التنقل -->
+                <div class="mb-6 border-b border-gray-200 dark:border-gray-700">
+                    <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" role="tablist">
+                        <li class="ml-2" role="presentation">
+                            <button id="verify-text-tab" class="inline-block p-4 border-b-2 rounded-t-lg active" role="tab" aria-selected="true">
+                                <i class="fas fa-font ml-1"></i>
+                                التحقق من نص
+                            </button>
+                        </li>
+                        <li class="ml-2" role="presentation">
+                            <button id="verify-file-tab" class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:border-gray-300" role="tab" aria-selected="false">
+                                <i class="fas fa-file ml-1"></i>
+                                التحقق من ملف
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- محتوى التحقق من النص -->
+                <div id="verify-text-content" role="tabpanel" aria-labelledby="verify-text-tab">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">النص الأصلي:</label>
+                        <textarea id="verify-original-text" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200" rows="4" placeholder="أدخل النص الأصلي..."></textarea>
+                        <p class="mt-1 input-tip dark:text-gray-400">أدخل النص الأصلي الذي تم توقيعه (وليس التوقيع نفسه).</p>
+                    </div>
+                </div>
+                
+                <!-- محتوى التحقق من الملف -->
+                <div id="verify-file-content" class="hidden" role="tabpanel" aria-labelledby="verify-file-tab">
+                    <div class="mb-6">
+                        <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">الملف الأصلي:</label>
+                        <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-blue-500 dark:hover:border-blue-400 transition duration-300 cursor-pointer">
+                            <input type="file" id="file-to-verify" class="hidden">
+                            <label for="file-to-verify" class="cursor-pointer">
+                                <i class="fas fa-file-upload text-3xl mb-2 text-blue-500"></i>
+                                <p class="mb-1 text-gray-700 dark:text-gray-300">اسحب وأفلت الملف هنا أو انقر للاختيار</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">يمكنك تحميل أي نوع من الملفات</p>
+                            </label>
+                        </div>
+                        <div id="file-to-verify-info" class="mt-3 hidden">
+                            <div class="flex items-center justify-between bg-blue-50 dark:bg-blue-900 p-3 rounded-lg">
+                                <div>
+                                    <p id="file-to-verify-name" class="font-medium text-blue-700 dark:text-blue-300"></p>
+                                    <p id="file-to-verify-size" class="text-sm text-blue-600 dark:text-blue-400"></p>
+                                </div>
+                                <button id="remove-file-to-verify" class="text-red-500 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
+                                    <i class="fas fa-times-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="mb-6">
-                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">التوقيع الرقمي (بتنسيق Base64):</label>
-                    <textarea id="verify-signature" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" rows="4" placeholder="أدخل التوقيع الرقمي بتنسيق Base64..."></textarea>
-                    <p class="mt-1 input-tip dark:text-gray-400">أدخل التوقيع الرقمي بتنسيق Base64 كما تم إنشاؤه بواسطة أداة "التوقيع الرقمي".</p>
+                    <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">التوقيع الرقمي:</label>
+                    <div class="mb-4">
+                        <textarea id="verify-signature" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" rows="4" placeholder="أدخل التوقيع الرقمي..."></textarea>
+                        <p class="mt-1 input-tip dark:text-gray-400">أدخل التوقيع الرقمي (المشفر بـ Base64) الذي تريد التحقق منه.</p>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="flex items-center">
+                            <span class="ml-2 text-gray-700 dark:text-gray-300">أو قم بتحميل ملف التوقيع:</span>
+                            <div class="relative">
+                                <input type="file" id="signature-file" class="hidden" accept=".sig,.asc">
+                                <label for="signature-file" class="cursor-pointer bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 py-1 px-3 rounded-lg transition duration-300 inline-block mr-2">
+                                    <i class="fas fa-file-signature ml-1"></i>
+                                    اختر ملف
+                                </label>
+                            </div>
+                        </div>
+                        <p id="signature-file-name" class="mt-2 text-sm text-blue-600 dark:text-blue-400 hidden"></p>
+                    </div>
                 </div>
                 
                 <div class="mb-6">
                     <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">المفتاح العام (RSA):</label>
-                    <textarea id="verify-public-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" rows="6" placeholder="أدخل المفتاح العام RSA للموقّع..."></textarea>
+                    <textarea id="verify-public-key" class="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 font-mono" rows="6" placeholder="أدخل المفتاح العام RSA..."></textarea>
                     <p class="mt-1 input-tip dark:text-gray-400">أدخل المفتاح العام RSA بتنسيق PEM (يبدأ بـ -----BEGIN PUBLIC KEY----- وينتهي بـ -----END PUBLIC KEY-----).</p>
                 </div>
                 
                 <div class="mb-6">
                     <button id="verify-signature-btn" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg transition duration-300">
-                        <i class="fas fa-check-circle mr-2"></i>
+                        <i class="fas fa-check-circle ml-2"></i>
                         التحقق من التوقيع
                     </button>
                     <p class="mt-2 input-tip dark:text-gray-400">انقر للتحقق من صحة التوقيع الرقمي باستخدام المفتاح العام المدخل.</p>
@@ -868,9 +1226,9 @@
                 
                 <div id="verification-result" class="mb-6 hidden">
                     <div class="p-4 rounded-lg">
-                        <p id="verification-message" class="text-center text-lg font-bold"></p>
+                        <h3 id="verification-message" class="text-xl font-bold mb-2"></h3>
+                        <p id="verification-details" class="text-gray-700 dark:text-gray-300"></p>
                     </div>
-                    <p class="mt-1 input-tip dark:text-gray-400">إذا كانت النتيجة "التوقيع صحيح"، فهذا يعني أن النص لم يتم تعديله وأنه تم توقيعه بالفعل باستخدام المفتاح الخاص المقابل للمفتاح العام المدخل.</p>
                 </div>
             </div>
         </div>

@@ -18,11 +18,31 @@ The application includes the following tools:
 
 - **Wallet Generator**: Create seed phrases, private keys, and public addresses
 - **AES Encryption/Decryption**: Encrypt and decrypt data using the Advanced Encryption Standard
+  - Support for text and file encryption/decryption
+  - Multiple encryption modes (CBC, CFB, OFB, CTR)
+  - Customizable key sizes (128, 192, 256 bits)
+
 - **Digital Signatures**: Create and verify digital signatures using RSA
-- **Text to Hash Conversion**: Generate hashes using multiple algorithms (MD5, SHA-1, SHA-256, SHA-512, RIPEMD-160)
+  - Sign both text and files with RSA private keys
+  - Verify signatures for text and files
+  - Download signatures in both `.sig` (binary) and `.asc` (ASCII-armored) formats
+  - Comprehensive explanations about digital signature formats and usage
+
+- **Text to Hash Conversion**: Generate hashes using multiple algorithms
+  - Support for MD5, SHA-1, SHA-256, SHA-512, RIPEMD-160
+  - Detailed explanations of each algorithm's security properties
+
 - **Base64 Encoding/Decoding**: Convert data to and from Base64 format
+  - Support for text and file uploads
+  - Automatic file type detection
+  - File preview for images and download options for decoded files
+  - Handles both raw Base64 strings and data URLs
+
 - **Hex to Base58 Conversion**: Convert between hexadecimal and Base58 encodings
+
 - **RSA Key Generator**: Generate RSA key pairs for asymmetric encryption
+  - Multiple key sizes (1024, 2048, 4096 bits)
+  - Educational content explaining public/private key concepts
 
 ## 💻 Technologies
 
@@ -50,6 +70,14 @@ Simply open the `index.html` file in your web browser to start using the applica
 3. Select the desired tool from the tabbed interface
 4. Follow the instructions provided for each tool
 5. All operations are performed in your browser - no data is sent to any server
+
+### File Operations
+
+Several tools now support file operations:
+
+- **Digital Signatures**: Upload files to sign them with your private key, or verify signatures of uploaded files
+- **Base64 Encoding/Decoding**: Convert files to Base64 or decode Base64 strings back to files
+- **AES Encryption**: Encrypt and decrypt files with password protection
 
 ## 🔍 Educational Purpose
 
